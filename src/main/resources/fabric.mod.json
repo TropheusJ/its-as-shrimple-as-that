@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.fabricmc.example.ExampleMod"
+      "com.tropheus_jay.example.ExampleMod"
     ]
   },
   "mixins": [
