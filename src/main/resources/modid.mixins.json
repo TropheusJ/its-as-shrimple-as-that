@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.tropheus_jay.example.mixin",
+  "package": "io.github.example.example",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
   ],

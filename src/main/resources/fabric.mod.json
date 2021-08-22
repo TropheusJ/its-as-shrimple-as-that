@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.tropheus_jay.example.ExampleMod"
+      "io.github.example.example.ExampleMod"
     ]
   },
   "mixins": [
