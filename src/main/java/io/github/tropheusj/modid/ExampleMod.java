@@ -1,4 +1,4 @@
-package io.github.example.example;
+package io.github.tropheusj.modid;
 
 import net.fabricmc.api.ModInitializer;
 

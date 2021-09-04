@@ -8,14 +8,14 @@
     "Tropheus Jay"
   ],
   "contact": {
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/TropheusJ/fabric-example-mod"
   },
   "license": "MIT",
   "icon": "assets/modid/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.example.example.ExampleMod"
+      "io.github.tropheusj.modid.ExampleMod"
     ]
   },
   "mixins": [
