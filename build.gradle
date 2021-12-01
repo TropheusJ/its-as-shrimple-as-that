@@ -1,7 +1,7 @@
 plugins {
-    id 'fabric-loom' version '0.9-SNAPSHOT'
+    id 'fabric-loom' version '0.10-SNAPSHOT'
     id 'maven-publish'
-    id "io.github.juuxel.loom-quiltflower" version "1.3.0"
+    id "io.github.juuxel.loom-quiltflower-mini" version "1.+"
 }
 
 sourceCompatibility = JavaVersion.VERSION_16
@@ -12,7 +12,7 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-    maven {url = "https://api.modrinth.com/maven"}
+    maven { url = "https://api.modrinth.com/maven" }
 }
 
 dependencies {
@@ -31,7 +31,7 @@ processResources {
     }
 }
 
-tasks.withType(JavaCompile) { it.options.encoding = "UTF-8" }
+tasks.withType(JavaCompile).configureEach { it.options.release = 16 }
 
 java {
     withSourcesJar()
@@ -45,17 +45,11 @@ jar {
 
 // configure the maven publication
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            // add all the jars that should be included when publishing to maven
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-        }
-    }
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
 
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
