@@ -1,6 +1,13 @@
 name: release
-on: [ pull_request, push ]
-
+on:
+    workflow_dispatch:
+        inputs:
+            version:
+                description: 'Release version (e.g. v0.1.0)'
+                required: true
+            message:
+                description: 'Tag message'
+                required: true
 jobs:
     build:
         strategy:
@@ -8,7 +15,7 @@ jobs:
                 java: [ 16 ]
         runs-on: ubuntu-latest
         env:
-            PUBLISH_SUFFIX: snapshots
+            PUBLISH_SUFFIX: releases
         steps:
             - name: checkout repository
               uses: actions/checkout@v2
@@ -29,3 +36,8 @@ jobs:
 
             - name: publish
               run: ./gradlew publish
+
+            - name: Create Tag
+              uses: christophebedard/tag-version-commit@v1
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
