@@ -16,9 +16,11 @@ indent_size = 2
 [*.yml]
 indent_size = 2
 
+[*.gradle]
+indent_style = tab
+
 [*.java]
 indent_style = tab
-indent_size = 8
 ij_continuation_indent_size = 8
 ij_java_class_count_to_use_import_on_demand = 99
 ij_java_names_count_to_use_import_on_demand = 99
