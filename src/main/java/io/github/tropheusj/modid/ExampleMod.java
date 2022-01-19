@@ -2,13 +2,16 @@ package io.github.tropheusj.modid;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.Identifier;
 
 public class ExampleMod implements ModInitializer {
-	public static final String MOD_ID = "modid";
-	public static String VERSION;
+	public static final String ID = "modid";
 
 	@Override
 	public void onInitialize() {
-		VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().getMetadata().getVersion().getFriendlyString();
+	}
+
+	public static Identifier id(String path) {
+		return new Identifier(ID, path);
 	}
 }
