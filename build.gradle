@@ -37,7 +37,6 @@ dependencies {
 	modRuntimeOnly("mcp.mobius.waila:wthit:fabric-${project.wthit_version}")
 	modRuntimeOnly("maven.modrinth:sodium:${project.sodium_version}") // rendering beware
     runtimeOnly("org.joml:joml:1.10.2")
-	modRuntimeOnly("maven.modrinth:indium:${project.indium_version}")
 	modRuntimeOnly("maven.modrinth:lithium:${project.lithium_version}")
 	modRuntimeOnly("maven.modrinth:phosphor:${project.phosphor_version}")
 	modRuntimeOnly("maven.modrinth:iris:${project.iris_version}")
