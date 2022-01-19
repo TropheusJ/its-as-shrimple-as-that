@@ -3,6 +3,7 @@
 plugins {
 	id "fabric-loom" version "0.10-SNAPSHOT"
 	id "io.github.juuxel.loom-quiltflower-mini" version "1.+"
+	id 'org.quiltmc.quilt-mappings-on-loom' version '3.1.1'
 	id "maven-publish"
 }
 
@@ -17,22 +18,30 @@ repositories {
 	maven { url = "https://api.modrinth.com/maven" }
 	maven { url = "https://maven.bai.lol" }
 	maven { url = "https://maven.terraformersmc.com/releases/" }
+	maven { url = "https://maven.parchmentmc.org" }
 }
 
 dependencies {
 	// dev environment
 	minecraft("com.mojang:minecraft:${project.minecraft_version}")
-	mappings("net.fabricmc:yarn:${project.minecraft_version}+build.${project.yarn_mappings}:v2")
+	mappings loom.layered {
+		it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:1.18.1+build.5:v2")) // https://maven.quiltmc.org/#browse/browse:release
+		it.parchment("org.parchmentmc.data:parchment-1.18.1:BLEEDING-20211212.174449-1@zip") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.1/BLEEDING-SNAPSHOT
+		it.officialMojangMappings {
+			setNameSyntheticMembers(false)
+		}
+	}
 	modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
-	modImplementation("maven.modrinth:lazydfu:0.1.2")
-    modImplementation("maven.modrinth:suggestionproviderfabric:1.0.0")
-    modImplementation("mcp.mobius.waila:wthit:fabric-${project.wthit_version}")
-    modImplementation("maven.modrinth:sodium:${project.sodium_version}") // rendering beware
-    implementation("org.joml:joml:1.10.2")
-    modImplementation("maven.modrinth:lithium:${project.lithium_version}")
-    modImplementation("maven.modrinth:phosphor:${project.phosphor_version}")
-    modImplementation("maven.modrinth:iris:${project.iris_version}")
-    modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}") { exclude group: "net.fabricmc"; exclude group: "net.fabricmc.fabric-api" }
+	modRuntimeOnly("maven.modrinth:lazydfu:0.1.2")
+	modRuntimeOnly("maven.modrinth:suggestionproviderfabric:1.0.0")
+	modRuntimeOnly("mcp.mobius.waila:wthit:fabric-${project.wthit_version}")
+	modRuntimeOnly("maven.modrinth:sodium:${project.sodium_version}") // rendering beware
+    runtimeOnly("org.joml:joml:1.10.2")
+	modRuntimeOnly("maven.modrinth:indium:${project.indium_version}")
+	modRuntimeOnly("maven.modrinth:lithium:${project.lithium_version}")
+	modRuntimeOnly("maven.modrinth:phosphor:${project.phosphor_version}")
+	modRuntimeOnly("maven.modrinth:iris:${project.iris_version}")
+	modRuntimeOnly("com.terraformersmc:modmenu:${project.modmenu_version}") { exclude group: "net.fabricmc"; exclude group: "net.fabricmc.fabric-api" }
 
 	// dependencies
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
