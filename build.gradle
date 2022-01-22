@@ -18,7 +18,7 @@ group = project.maven_group
 if (grgit != null) {
 	version += "+${grgit.getBranch().current().name}.${grgit.head().abbreviatedId}"
 } else {
-	version += "custom_unknown"
+	version += "+custom_unknown"
 }
 
 repositories {
