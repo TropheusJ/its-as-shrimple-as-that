@@ -3,7 +3,8 @@
 plugins {
 	id "fabric-loom" version "0.10-SNAPSHOT"
 	id "io.github.juuxel.loom-quiltflower-mini" version "1.+"
-	id 'org.quiltmc.quilt-mappings-on-loom' version '3.1.1'
+	id "org.quiltmc.quilt-mappings-on-loom" version "3.1.1"
+	id "org.ajoberstar.grgit" version "4.1.1"
 	id "maven-publish"
 }
 
@@ -13,6 +14,12 @@ targetCompatibility = JavaVersion.VERSION_17
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
+
+if (grgit != null) {
+	version += "+${grgit.getBranch().current().name}.${grgit.head().abbreviatedId}"
+} else {
+	version += "custom_unknown"
+}
 
 repositories {
 	maven { url = "https://api.modrinth.com/maven" }
@@ -46,6 +53,16 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
 
+task buildOrPublish {
+	group = "build"
+	String mavenSuffix = System.getenv().PUBLISH_SUFFIX
+	if (mavenSuffix != null && !mavenSuffix.isEmpty()) {
+		dependsOn(tasks.getByName("publish"))
+	} else {
+		dependsOn(tasks.getByName("build"))
+	}
+}
+
 processResources {
 	inputs.property "version", project.version
 
@@ -66,7 +83,6 @@ jar {
 	}
 }
 
-// configure the maven publication
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
@@ -75,13 +91,8 @@ publishing {
 	}
 
 	repositories {
-		String suffix = System.getenv().PUBLISH_SUFFIX // 'releases' or 'snapshots'
-		if (suffix == null || suffix.isEmpty()) {
-			System.out.println("Failed to publish to maven!")
-			return
-		}
 		maven {
-			url = "https://maven.devos.community/${suffix}/"
+			url = "https://maven.devos.community/${System.getenv().PUBLISH_SUFFIX}/"
 			credentials {
 				username = System.getenv().MAVEN_USER
 				password = System.getenv().MAVEN_PASS
