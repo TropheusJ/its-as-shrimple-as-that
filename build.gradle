@@ -55,11 +55,13 @@ dependencies {
 
 task buildOrPublish {
 	group = "build"
-	String mavenSuffix = System.getenv().PUBLISH_SUFFIX
-	if (mavenSuffix != null && !mavenSuffix.isEmpty()) {
+	String mavenUser = System.getenv().MAVEN_USER
+	if (mavenUser != null && !mavenUser.isEmpty()) {
 		dependsOn(tasks.getByName("publish"))
+		println "prepared for publish"
 	} else {
 		dependsOn(tasks.getByName("build"))
+		println "prepared for build"
 	}
 }
 
