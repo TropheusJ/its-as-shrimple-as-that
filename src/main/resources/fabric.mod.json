@@ -22,9 +22,9 @@
     "modid.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.12.12",
-    "fabric": ">=0.46.1",
-    "minecraft": ">=1.18.1",
-    "java": ">=17"
+    "fabricloader": ">=${loader_version}",
+    "fabric": ">=${fabric_version}",
+    "minecraft": ">=${minecraft_version}",
+    "java": ">=${java_version}"
   }
 }
