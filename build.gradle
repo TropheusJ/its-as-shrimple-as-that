@@ -32,8 +32,8 @@ dependencies {
 	// dev environment
 	minecraft("com.mojang:minecraft:${project.minecraft_version}")
 	mappings loom.layered {
-		it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:1.18.1+build.6:v2")) // https://maven.quiltmc.org/#browse/browse:release
-		it.parchment("org.parchmentmc.data:parchment-1.18.1:BLEEDING-20211212.174449-1@zip") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.1/BLEEDING-SNAPSHOT
+		it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:${project.minecraft_version}+build.${project.qm_version}:v2"))
+//		it.parchment("org.parchmentmc.data:parchment-1.18.1:BLEEDING-20211212.174449-1@zip") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.1/BLEEDING-SNAPSHOT
 		it.officialMojangMappings {
 			setNameSyntheticMembers(false)
 		}
@@ -45,7 +45,6 @@ dependencies {
 	modRuntimeOnly("maven.modrinth:sodium:${project.sodium_version}") // rendering beware
     runtimeOnly("org.joml:joml:1.10.2")
 	modRuntimeOnly("maven.modrinth:lithium:${project.lithium_version}")
-//	modRuntimeOnly("maven.modrinth:phosphor:${project.phosphor_version}") // broken?
 	modRuntimeOnly("maven.modrinth:iris:${project.iris_version}")
 	modRuntimeOnly("com.terraformersmc:modmenu:${project.modmenu_version}") { exclude group: "net.fabricmc"; exclude group: "net.fabricmc.fabric-api" }
 
