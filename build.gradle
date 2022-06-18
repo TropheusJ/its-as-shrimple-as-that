@@ -34,15 +34,15 @@ dependencies {
 	minecraft("com.mojang:minecraft:${project.minecraft_version}")
 	mappings loom.layered {
 		it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:${project.minecraft_version}+build.${project.qm_version}:v2"))
-		it.parchment("org.parchmentmc.data:parchment-1.18.2:BLEEDING-20220423.075040-3@zip") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.2/BLEEDING-SNAPSHOT
 		it.officialMojangMappings {
 			setNameSyntheticMembers(false)
 		}
 	}
 	modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 	modLocalRuntime("maven.modrinth:lazydfu:0.1.2")
-	modLocalRuntime("maven.modrinth:suggestionproviderfabric:1.0.1")
+	modLocalRuntime("maven.modrinth:suggestion-tweaker:${project.suggestion_tweaker_version}")
 	modLocalRuntime("mcp.mobius.waila:wthit:fabric-${project.wthit_version}")
+	modLocalRuntime("maven.modrinth:badpackets:fabric-${project.bad_packets_version}")
 	modLocalRuntime("maven.modrinth:sodium:${project.sodium_version}") // rendering beware
     localRuntime("org.joml:joml:1.10.4")
 	modLocalRuntime("maven.modrinth:lithium:${project.lithium_version}")
