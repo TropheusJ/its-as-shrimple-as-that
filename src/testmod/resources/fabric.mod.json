@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "modid_test",
+  "version": "1.0.0",
+  "name": "Example Mod Test",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Tropheus Jay"
+  ],
+  "contact": {
+    "sources": "https://github.com/TropheusJ/fabric-example-mod"
+  },
+  "license": "MIT",
+  "icon": "assets/modid_test/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "io.github.tropheusj.modid_test.ExampleModTest"
+    ],
+    "fabric-gametest": [
+      "io.github.tropheusj.modid_test.gametest.ExampleModGameTest"
+    ]
+  }
+}
