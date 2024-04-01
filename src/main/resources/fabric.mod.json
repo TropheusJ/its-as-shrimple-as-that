@@ -1,28 +1,29 @@
 {
   "schemaVersion": 1,
-  "id": "krill",
+  "id": "its_as_shrimple_as_that",
   "version": "${version}",
-  "name": "Krill",
-  "description": "It's as shrimple as that",
+  "name": "It's as Shrimple as That",
+  "description": "It's true.",
   "authors": [
-    "Tropheus Jay"
+    "Tropheus Jay",
+    "Cart3r"
   ],
   "contact": {
-    "sources": "https://github.com/TropheusJ/krill"
+    "sources": "https://github.com/TropheusJ/its-as-shrimple-as-that"
   },
   "license": "MIT",
-  "icon": "assets/krill/icon.png",
+  "icon": "assets/its_as_shrimple_as_that/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.tropheusj.krill.Krill"
+      "io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat"
     ],
     "client": [
-      "io.github.tropheusj.krill.KrillClient"
+      "io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThatClient"
     ]
   },
   "mixins": [
-    "krill.mixins.json"
+    "its_as_shrimple_as_that.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",

@@ -1,6 +1,6 @@
-package io.github.tropheusj.krill.entity;
+package io.github.tropheusj.its_as_shrimple_as_that.entity;
 
-import io.github.tropheusj.krill.Krill;
+import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,7 +47,7 @@ public class Krilling {
 		}
 
 		// replace existing entity
-		KrillEntity krill = Krill.KRILL_TYPE.create(level);
+		ShrimpEntity krill = ItsAsShrimpleAsThat.SHRIMP_TYPE.create(level);
 		if (krill != null) {
 			krill.setPos(entity.position());
 			level.addFreshEntity(krill);
@@ -57,7 +57,7 @@ public class Krilling {
 
 	private static void transformPlayer(ServerPlayer player) {
 		// apply status effect
-		Holder<MobEffect> holder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(Krill.KRILLED);
+		Holder<MobEffect> holder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ItsAsShrimpleAsThat.KRILLED);
 		player.addEffect(new MobEffectInstance(holder, 30 * 20));
 	}
 }

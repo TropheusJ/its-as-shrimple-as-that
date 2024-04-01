@@ -1,4 +1,4 @@
-package io.github.tropheusj.krill.entity;
+package io.github.tropheusj.its_as_shrimple_as_that.entity;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
@@ -13,8 +13,8 @@ import net.minecraft.world.level.Level;
 
 import org.jetbrains.annotations.Nullable;
 
-public class KrillEntity extends AbstractVillager {
-	public KrillEntity(EntityType<? extends KrillEntity> type, Level level) {
+public class ShrimpEntity extends AbstractVillager {
+	public ShrimpEntity(EntityType<? extends ShrimpEntity> type, Level level) {
 		super(type, level);
 	}
 

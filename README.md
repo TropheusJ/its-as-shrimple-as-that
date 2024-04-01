@@ -1,2 +1,1 @@
-# Krill
-It's as shrimple as that
+# It's as Shrimple as That

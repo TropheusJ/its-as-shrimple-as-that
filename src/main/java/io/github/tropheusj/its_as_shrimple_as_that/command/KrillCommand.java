@@ -1,13 +1,10 @@
-package io.github.tropheusj.krill.command;
+package io.github.tropheusj.its_as_shrimple_as_that.command;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterators;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
-import io.github.tropheusj.krill.Krill;
-import io.github.tropheusj.krill.entity.Krilling;
+import io.github.tropheusj.its_as_shrimple_as_that.entity.Krilling;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;

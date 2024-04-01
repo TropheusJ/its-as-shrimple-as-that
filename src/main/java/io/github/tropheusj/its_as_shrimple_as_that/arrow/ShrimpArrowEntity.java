@@ -1,14 +1,12 @@
-package io.github.tropheusj.krill.arrow;
+package io.github.tropheusj.its_as_shrimple_as_that.arrow;
 
-import io.github.tropheusj.krill.Krill;
-import io.github.tropheusj.krill.entity.KrillEntity;
-import io.github.tropheusj.krill.entity.Krilling;
+import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
+import io.github.tropheusj.its_as_shrimple_as_that.entity.ShrimpEntity;
+import io.github.tropheusj.its_as_shrimple_as_that.entity.Krilling;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -19,8 +17,8 @@ import net.minecraft.world.phys.EntityHitResult;
 
 import org.jetbrains.annotations.NotNull;
 
-public class KrillArrowEntity extends AbstractArrow {
-	public KrillArrowEntity(EntityType<? extends KrillArrowEntity> entityType, Level level) {
+public class ShrimpArrowEntity extends AbstractArrow {
+	public ShrimpArrowEntity(EntityType<? extends ShrimpArrowEntity> entityType, Level level) {
 		super(entityType, level);
 	}
 
@@ -29,7 +27,7 @@ public class KrillArrowEntity extends AbstractArrow {
 		super.onHitBlock(hit);
 		// free him
 		BlockPos offset = hit.getBlockPos().relative(hit.getDirection());
-		KrillEntity krill = Krill.KRILL_TYPE.create(this.level());
+		ShrimpEntity krill = ItsAsShrimpleAsThat.SHRIMP_TYPE.create(this.level());
 		if (krill != null) {
 			krill.moveTo(offset, 0, 0);
 			this.level().addFreshEntity(krill);
