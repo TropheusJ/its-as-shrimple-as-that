@@ -1,25 +1,25 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "krill",
   "version": "${version}",
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Krill",
+  "description": "It's as shrimple as that",
   "authors": [
     "Tropheus Jay"
   ],
   "contact": {
-    "sources": "https://github.com/TropheusJ/fabric-example-mod"
+    "sources": "https://github.com/TropheusJ/krill"
   },
   "license": "MIT",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/krill/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.tropheusj.modid.ExampleMod"
+      "io.github.tropheusj.krill.Krill"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "krill.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",
