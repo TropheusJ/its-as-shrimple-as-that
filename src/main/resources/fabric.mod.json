@@ -16,6 +16,9 @@
   "entrypoints": {
     "main": [
       "io.github.tropheusj.krill.Krill"
+    ],
+    "client": [
+      "io.github.tropheusj.krill.KrillClient"
     ]
   },
   "mixins": [

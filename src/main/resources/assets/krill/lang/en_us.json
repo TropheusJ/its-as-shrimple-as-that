@@ -1,0 +1,4 @@
+{
+  "commands.krill.success.single": "Krilled %s",
+  "commands.krill.success.multiple": "Krilled %s entities"
+}
