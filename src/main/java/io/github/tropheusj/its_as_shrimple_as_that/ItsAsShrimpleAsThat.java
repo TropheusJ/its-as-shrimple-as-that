@@ -12,6 +12,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.core.Holder;
@@ -30,6 +31,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.SpawnEggItem;
@@ -82,6 +84,8 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 		Registry.register(BuiltInRegistries.TRIGGER_TYPES, id("accomplish_dreams"), ACCOMPLISH_DREAMS_TRIGGER);
 		Registry.register(BuiltInRegistries.TRIGGER_TYPES, id("krill_self"), KRILL_SELF);
 
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(entries -> entries.accept(SHRIMP_EGG));
+
 		CommandRegistrationCallback.EVENT.register(
 				(dispatcher, registryAccess, environment) -> dispatcher.register(KrillCommand.build())
 		);
@@ -91,7 +95,7 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 		BiomeModifications.addSpawn(
 				BiomeSelectors.tag(BiomeTags.IS_OCEAN),
 				MobCategory.WATER_AMBIENT, SHRIMP_TYPE,
-				50, 3, 5
+				5, 3, 5
 		);
 
 		SpawnPlacements.register(SHRIMP_TYPE, SpawnPlacementTypes.IN_WATER, Types.MOTION_BLOCKING_NO_LEAVES, ShrimpEntity::checkShrimpSpawnRules);
