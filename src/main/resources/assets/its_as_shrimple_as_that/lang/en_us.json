@@ -1,4 +1,6 @@
 {
+  "entity.its_as_shrimple_as_that.shrimp": "Shrimp",
+
   "commands.krill.success.single": "Krilled %s",
   "commands.krill.success.multiple": "Krilled %s entities"
 }

@@ -1,6 +1,9 @@
 package io.github.tropheusj.its_as_shrimple_as_that;
 
+import io.github.tropheusj.its_as_shrimple_as_that.entity.render.ShrimpModel;
+import io.github.tropheusj.its_as_shrimple_as_that.entity.render.ShrimpRenderer;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -16,7 +19,9 @@ public class ItsAsShrimpleAsThatClient implements ClientModInitializer {
 			return projectiles != null && projectiles.contains(Items.FIREWORK_ROCKET) ? 1 : 0;
 		});
 
-		EntityRendererRegistry.register(ItsAsShrimpleAsThat.SHRIMP_TYPE, NoopRenderer::new);
+		EntityModelLayerRegistry.registerModelLayer(ShrimpModel.LAYER_LOCATION, ShrimpModel::createBodyLayer);
+
+		EntityRendererRegistry.register(ItsAsShrimpleAsThat.SHRIMP_TYPE, ShrimpRenderer::new);
 		EntityRendererRegistry.register(ItsAsShrimpleAsThat.SHRIMP_ARROW_TYPE, NoopRenderer::new);
 	}
 }

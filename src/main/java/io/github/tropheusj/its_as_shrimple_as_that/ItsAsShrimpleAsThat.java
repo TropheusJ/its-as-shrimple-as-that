@@ -19,8 +19,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
 
@@ -28,13 +26,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ItsAsShrimpleAsThat implements ModInitializer {
-	public static final String ID = "krill";
+	public static final String ID = "its_as_shrimple_as_that";
 	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
 
 	public static final EntityType<ShrimpEntity> SHRIMP_TYPE = FabricEntityTypeBuilder.create()
 			.entityFactory(ShrimpEntity::new)
 			.spawnGroup(MobCategory.WATER_AMBIENT)
-			.dimensions(EntityDimensions.fixed(0.5f, 0.5f))
+			.dimensions(EntityDimensions.fixed(0.9f, 0.5f))
 			.build();
 
 	public static final EntityType<ShrimpArrowEntity> SHRIMP_ARROW_TYPE = FabricEntityTypeBuilder.create()
@@ -60,7 +58,7 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 				(dispatcher, registryAccess, environment) -> dispatcher.register(KrillCommand.build())
 		);
 
-		FabricDefaultAttributeRegistry.register(SHRIMP_TYPE, Villager.createAttributes().build());
+		FabricDefaultAttributeRegistry.register(SHRIMP_TYPE, ShrimpEntity.createAttributes().build());
 	}
 
 	public static ResourceLocation id(String path) {

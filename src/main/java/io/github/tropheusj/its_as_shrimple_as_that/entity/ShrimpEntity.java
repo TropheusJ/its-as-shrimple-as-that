@@ -1,45 +1,53 @@
 package io.github.tropheusj.its_as_shrimple_as_that.entity;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.AgeableMob;
+import java.util.Optional;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.syncher.SynchedEntityData.Builder;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.npc.AbstractVillager;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.ItemCost;
-import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import org.jetbrains.annotations.Nullable;
+public class ShrimpEntity extends PathfinderMob {
+	public static final EntityDataAccessor<Optional<BlockPos>> WORKSTATION = SynchedEntityData.defineId(ShrimpEntity.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
 
-public class ShrimpEntity extends AbstractVillager {
 	public ShrimpEntity(EntityType<? extends ShrimpEntity> type, Level level) {
 		super(type, level);
 	}
 
 	@Override
-	protected void rewardTradeXp(MerchantOffer merchantOffer) {
-		if (merchantOffer.shouldRewardExp()) {
-			int i = 3 + this.random.nextInt(4);
-			this.level().addFreshEntity(new ExperienceOrb(
-					this.level(), this.getX(), this.getY() + 0.5, this.getZ(), i
-			));
-		}
+	protected void defineSynchedData(Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(WORKSTATION, Optional.empty());
 	}
 
 	@Override
-	protected void updateTrades() {
-		this.getOffers().add(new MerchantOffer(
-				new ItemCost(Items.AMBER_GEM),
-				new ItemStack(Items.POISONOUS_POTATO_FRIES),
-				7, 1, 1
-		));
+	protected void registerGoals() {
+		this.goalSelector.addGoal(1, new FollowDreamsGoal(this, 1, 16, 2));
+		this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 10, 0.1f));
 	}
 
-	@Nullable
-	@Override
-	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-		return null;
+	public void becomeChef(BlockPos workstation) {
+		this.entityData.set(WORKSTATION, Optional.of(workstation));
+	}
+
+	public void crushDreams() {
+		this.entityData.set(WORKSTATION,Optional.empty());
+	}
+
+	public boolean isChef() {
+		return this.entityData.get(WORKSTATION).isPresent();
+	}
+
+	public static AttributeSupplier.Builder createAttributes() {
+		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 8);
 	}
 }

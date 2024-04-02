@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": {
+      "item": "its_as_shrimple_as_that:fried_rice"
+    },
+    "title": "You're telling me a shrimp fried this rice?",
+    "description": "It couldn't be more true.",
+    "background": "minecraft:dried_kelp_block",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "traded": {
+      "trigger": "minecraft:villager_trade",
+      "conditions": {
+        "item": {
+          "items": [
+            "its_as_shrimple_as_that:fried_rice"
+          ]
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "traded"
+    ]
+  ],
+  "rewards": {
+    "experience": 42069
+  }
+}
