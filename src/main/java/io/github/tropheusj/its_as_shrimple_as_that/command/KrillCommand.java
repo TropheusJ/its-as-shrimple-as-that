@@ -3,7 +3,7 @@ package io.github.tropheusj.its_as_shrimple_as_that.command;
 import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
-import io.github.tropheusj.its_as_shrimple_as_that.entity.Krilling;
+import io.github.tropheusj.its_as_shrimple_as_that.entity.Krillification;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
@@ -17,7 +17,7 @@ import static net.minecraft.commands.Commands.literal;
 
 public class KrillCommand {
 	public static LiteralArgumentBuilder<CommandSourceStack> build() {
-		return literal("kill")
+		return literal("krill")
 				.requires(source -> source.hasPermission(2))
 				.executes(ctx -> krill(ctx.getSource(), ImmutableList.of(ctx.getSource().getEntityOrException())))
 				.then(argument("targets", EntityArgument.entities())
@@ -28,7 +28,7 @@ public class KrillCommand {
 	private static int krill(CommandSourceStack source, Collection<? extends Entity> collection) {
 		for (Entity entity : collection) {
 			if (entity instanceof LivingEntity living)
-				Krilling.transform(living);
+				Krillification.transform(living);
 		}
 
 		Component feedback = getFeedback(collection);

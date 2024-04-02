@@ -2,7 +2,7 @@ package io.github.tropheusj.its_as_shrimple_as_that.arrow;
 
 import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.ShrimpEntity;
-import io.github.tropheusj.its_as_shrimple_as_that.entity.Krilling;
+import io.github.tropheusj.its_as_shrimple_as_that.entity.Krillification;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,7 +43,7 @@ public class ShrimpArrowEntity extends AbstractArrow {
 			// krilled self
 		}
 		if (hit.getEntity() instanceof LivingEntity living)
-			Krilling.transform(living);
+			Krillification.transform(living);
 	}
 
 	@Override

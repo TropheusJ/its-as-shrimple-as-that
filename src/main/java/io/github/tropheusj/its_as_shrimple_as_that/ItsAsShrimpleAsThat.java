@@ -1,9 +1,12 @@
 package io.github.tropheusj.its_as_shrimple_as_that;
 
 import io.github.tropheusj.its_as_shrimple_as_that.arrow.ShrimpArrowEntity;
+import io.github.tropheusj.its_as_shrimple_as_that.command.KrillCommand;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.ShrimpEntity;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -16,6 +19,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
 
@@ -50,6 +55,12 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, id("shrimp_arrow"), SHRIMP_ARROW_TYPE);
 		Registry.register(BuiltInRegistries.ITEM, id("shrimp_arrow"), SHRIMP_ARROW);
 		Registry.register(BuiltInRegistries.MOB_EFFECT, id("krilled"), KRILLED);
+
+		CommandRegistrationCallback.EVENT.register(
+				(dispatcher, registryAccess, environment) -> dispatcher.register(KrillCommand.build())
+		);
+
+		FabricDefaultAttributeRegistry.register(SHRIMP_TYPE, Villager.createAttributes().build());
 	}
 
 	public static ResourceLocation id(String path) {
