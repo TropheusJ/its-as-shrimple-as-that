@@ -5,13 +5,10 @@ import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,6 +22,9 @@ public class Krillification {
 
 		if (entity instanceof ShrimpEntity)
 			return;
+
+		if (kriller instanceof ServerPlayer player)
+			ItsAsShrimpleAsThat.KRILL_TRIGGER.trigger(player);
 
 		// particles
 		AABB bounds = entity.getBoundingBox();
@@ -66,7 +66,7 @@ public class Krillification {
 		player.addEffect(new MobEffectInstance(ItsAsShrimpleAsThat.KRILLED, 30 * 20));
 		if (player == kriller) {
 			// krilled self
-			ItsAsShrimpleAsThat.KRILL_SELF.trigger(player);
+			ItsAsShrimpleAsThat.KRILL_SELF_TRIGGER.trigger(player);
 		}
 	}
 }

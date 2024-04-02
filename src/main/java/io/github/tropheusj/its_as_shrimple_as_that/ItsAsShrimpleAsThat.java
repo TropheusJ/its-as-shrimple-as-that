@@ -3,7 +3,9 @@ package io.github.tropheusj.its_as_shrimple_as_that;
 import io.github.tropheusj.its_as_shrimple_as_that.arrow.ShrimpArrowEntity;
 import io.github.tropheusj.its_as_shrimple_as_that.arrow.ShrimpArrowItem;
 import io.github.tropheusj.its_as_shrimple_as_that.command.KrillCommand;
+import io.github.tropheusj.its_as_shrimple_as_that.criteria.LoadShrimpTrigger;
 import io.github.tropheusj.its_as_shrimple_as_that.criteria.KrillSelfTrigger;
+import io.github.tropheusj.its_as_shrimple_as_that.criteria.KrillTrigger;
 import io.github.tropheusj.its_as_shrimple_as_that.criteria.ShrimpAccomplishDreamsTrigger;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.ShrimpEntity;
 import io.github.tropheusj.its_as_shrimple_as_that.item.FriedRiceItem;
@@ -30,7 +32,6 @@ import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
@@ -72,7 +73,9 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 	);
 
 	public static final ShrimpAccomplishDreamsTrigger ACCOMPLISH_DREAMS_TRIGGER = new ShrimpAccomplishDreamsTrigger();
-	public static final KrillSelfTrigger KRILL_SELF = new KrillSelfTrigger();
+	public static final KrillTrigger KRILL_TRIGGER = new KrillTrigger();
+	public static final KrillSelfTrigger KRILL_SELF_TRIGGER = new KrillSelfTrigger();
+	public static final LoadShrimpTrigger LOAD_SHRIMP_TRIGGER = new LoadShrimpTrigger();
 
 	@Override
 	public void onInitialize() {
@@ -82,7 +85,9 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 		Registry.register(BuiltInRegistries.ITEM, id("fried_rice"), FRIED_RICE);
 		Registry.register(BuiltInRegistries.ITEM, id("shrimp_spawn_egg"), SHRIMP_EGG);
 		Registry.register(BuiltInRegistries.TRIGGER_TYPES, id("accomplish_dreams"), ACCOMPLISH_DREAMS_TRIGGER);
-		Registry.register(BuiltInRegistries.TRIGGER_TYPES, id("krill_self"), KRILL_SELF);
+		Registry.register(BuiltInRegistries.TRIGGER_TYPES, id("krill"), KRILL_TRIGGER);
+		Registry.register(BuiltInRegistries.TRIGGER_TYPES, id("krill_self"), KRILL_SELF_TRIGGER);
+		Registry.register(BuiltInRegistries.TRIGGER_TYPES, id("load_shrimp"), LOAD_SHRIMP_TRIGGER);
 
 		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(entries -> entries.accept(SHRIMP_EGG));
 

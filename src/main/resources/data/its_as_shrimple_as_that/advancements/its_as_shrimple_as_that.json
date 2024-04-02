@@ -1,33 +1,24 @@
 {
-  "parent": "its_as_shrimple_as_that:one_in_a_krillion",
   "display": {
     "icon": {
-      "id": "its_as_shrimple_as_that:fried_rice"
+      "id": "its_as_shrimple_as_that:shrimp_spawn_egg"
     },
-    "title": "You're telling me a shrimp fried this rice?",
-    "description": "It couldn't be more true.",
-    "frame": "challenge",
-    "show_toast": true,
-    "announce_to_chat": true,
+    "title": "It's as Shrimple as That",
+    "description": "Or is it?",
+    "background": "minecraft:textures/block/terredepomme.png",
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
     "hidden": false
   },
   "criteria": {
-    "traded": {
-      "trigger": "minecraft:villager_trade",
-      "conditions": {
-        "item": {
-          "items": "its_as_shrimple_as_that:fried_rice",
-          "count": 1
-        }
-      }
+    "impossible": {
+      "trigger": "minecraft:impossible"
     }
   },
   "requirements": [
     [
-      "traded"
+      "impossible"
     ]
-  ],
-  "rewards": {
-    "experience": 42069
-  }
+  ]
 }

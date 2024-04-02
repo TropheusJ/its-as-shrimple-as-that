@@ -1,4 +1,5 @@
 {
+  "parent": "its_as_shrimple_as_that:its_as_shrimple_as_that",
   "display": {
     "icon": {
       "id": "its_as_shrimple_as_that:shrimp_spawn_egg",
@@ -9,8 +10,7 @@
       }
     },
     "title": "One in a krillion",
-    "description": "Help a shrimp to accomplish its dreams.",
-    "background": "minecraft:textures/block/terredepomme.png",
+    "description": "Help a shrimp accomplish its dreams.",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

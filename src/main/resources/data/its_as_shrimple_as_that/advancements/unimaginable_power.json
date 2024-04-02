@@ -1,0 +1,24 @@
+{
+  "parent": "its_as_shrimple_as_that:its_as_shrimple_as_that",
+  "display": {
+    "icon": {
+      "id": "minecraft:crossbow"
+    },
+    "title": "Unimaginable Power",
+    "description": "What will you do with it?",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "load_shrimp": {
+      "trigger": "its_as_shrimple_as_that:load_shrimp"
+    }
+  },
+  "requirements": [
+    [
+      "load_shrimp"
+    ]
+  ]
+}

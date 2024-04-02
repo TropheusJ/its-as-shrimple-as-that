@@ -1,6 +1,5 @@
 package io.github.tropheusj.its_as_shrimple_as_that.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,10 +88,11 @@ public class ShrimpEntity extends PathfinderMob {
 			ChargedProjectiles ammo = held.get(DataComponents.CHARGED_PROJECTILES);
 			if (ammo != null && ammo.isEmpty()) {
 				// lock and load
-				if (!this.level().isClientSide) {
+				if (player instanceof ServerPlayer serverPlayer) {
 					ChargedProjectiles newAmmo = ChargedProjectiles.of(new ItemStack(ItsAsShrimpleAsThat.SHRIMP_ARROW));
 					held.set(DataComponents.CHARGED_PROJECTILES, newAmmo);
 					this.makeSound(SoundEvents.ITEM_FRAME_REMOVE_ITEM);
+					ItsAsShrimpleAsThat.LOAD_SHRIMP_TRIGGER.trigger(serverPlayer);
 					this.discard();
 				}
 				return InteractionResult.sidedSuccess(this.level().isClientSide);
