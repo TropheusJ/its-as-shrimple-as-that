@@ -19,6 +19,9 @@ public class Krillification {
 		if (!(entity.level() instanceof ServerLevel level))
 			throw new IllegalStateException();
 
+		if (entity instanceof ShrimpEntity)
+			return;
+
 		// particles
 		AABB bounds = entity.getBoundingBox();
 		BlockPos.betweenClosedStream(bounds).forEach(pos -> {
