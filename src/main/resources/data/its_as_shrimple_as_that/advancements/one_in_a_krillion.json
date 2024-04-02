@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "its_as_shrimple_as_that:shrimp_spawn_egg",
+      "components": {
+        "enchantments": {
+          "efficiency": 1
+        }
+      }
+    },
+    "title": "One in a krillion",
+    "description": "Help a shrimp to accomplish its dreams.",
+    "background": "minecraft:textures/block/terredepomme.png",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "accomplish_dreams": {
+      "trigger": "its_as_shrimple_as_that:accomplish_dreams"
+    }
+  },
+  "requirements": [
+    [
+      "accomplish_dreams"
+    ]
+  ]
+}

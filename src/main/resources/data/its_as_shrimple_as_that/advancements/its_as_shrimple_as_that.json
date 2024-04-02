@@ -1,11 +1,11 @@
 {
+  "parent": "its_as_shrimple_as_that:one_in_a_krillion",
   "display": {
     "icon": {
       "id": "its_as_shrimple_as_that:fried_rice"
     },
     "title": "You're telling me a shrimp fried this rice?",
     "description": "It couldn't be more true.",
-    "background": "minecraft:dried_kelp_block",
     "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,

@@ -1,6 +1,9 @@
 package io.github.tropheusj.its_as_shrimple_as_that.entity;
 
 import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
+
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
@@ -10,12 +13,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class Krillification {
-	public static void transform(LivingEntity entity) {
+	public static void transform(LivingEntity entity, @Nullable Entity kriller) {
 		if (!(entity.level() instanceof ServerLevel level))
 			throw new IllegalStateException();
 
@@ -45,7 +49,7 @@ public class Krillification {
 		);
 
 		if (entity instanceof ServerPlayer player) {
-			transformPlayer(player);
+			transformPlayer(player, kriller);
 			return;
 		}
 
@@ -58,9 +62,13 @@ public class Krillification {
 		}
 	}
 
-	private static void transformPlayer(ServerPlayer player) {
+	private static void transformPlayer(ServerPlayer player, Entity kriller) {
 		// apply status effect
 		Holder<MobEffect> holder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ItsAsShrimpleAsThat.KRILLED);
 		player.addEffect(new MobEffectInstance(holder, 30 * 20));
+		if (player == kriller) {
+			// krilled self
+			ItsAsShrimpleAsThat.KRILL_SELF.trigger(player);
+		}
 	}
 }

@@ -1,7 +1,9 @@
 package io.github.tropheusj.its_as_shrimple_as_that.entity;
 
+import java.util.List;
 import java.util.Optional;
 
+import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.goal.FollowDreamsGoal;
 
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.SynchedEntityData.Builder;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -35,6 +38,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.phys.AABB;
 
 public class ShrimpEntity extends PathfinderMob {
 	public static final EntityDataAccessor<Optional<BlockPos>> WORKSTATION = SynchedEntityData.defineId(ShrimpEntity.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
@@ -126,6 +130,8 @@ public class ShrimpEntity extends PathfinderMob {
 
 	public void becomeChef(BlockPos workstation) {
 		this.entityData.set(WORKSTATION, Optional.of(workstation));
+		List<ServerPlayer> nearbyPlayers = level().getEntitiesOfClass(ServerPlayer.class, new AABB(this.blockPosition()).inflate(16));
+		nearbyPlayers.forEach(ItsAsShrimpleAsThat.ACCOMPLISH_DREAMS_TRIGGER::trigger);
 	}
 
 	public void crushDreams() {

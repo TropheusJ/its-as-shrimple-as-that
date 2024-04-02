@@ -2,6 +2,8 @@ package io.github.tropheusj.its_as_shrimple_as_that;
 
 import io.github.tropheusj.its_as_shrimple_as_that.arrow.ShrimpArrowEntity;
 import io.github.tropheusj.its_as_shrimple_as_that.command.KrillCommand;
+import io.github.tropheusj.its_as_shrimple_as_that.criteria.KrillSelfTrigger;
+import io.github.tropheusj.its_as_shrimple_as_that.criteria.ShrimpAccomplishDreamsTrigger;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.ShrimpEntity;
 import io.github.tropheusj.its_as_shrimple_as_that.item.FriedRiceItem;
 import net.fabricmc.api.ModInitializer;
@@ -60,6 +62,9 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 			-0.66, AttributeModifier.Operation.ADD_VALUE
 	);
 
+	public static final ShrimpAccomplishDreamsTrigger ACCOMPLISH_DREAMS_TRIGGER = new ShrimpAccomplishDreamsTrigger();
+	public static final KrillSelfTrigger KRILL_SELF = new KrillSelfTrigger();
+
 	@Override
 	public void onInitialize() {
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, id("shrimp"), SHRIMP_TYPE);
@@ -68,6 +73,8 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 		Registry.register(BuiltInRegistries.ITEM, id("fried_rice"), FRIED_RICE);
 		Registry.register(BuiltInRegistries.ITEM, id("shrimp_spawn_egg"), SHRIMP_EGG);
 		Registry.register(BuiltInRegistries.MOB_EFFECT, id("krilled"), KRILLED);
+		Registry.register(BuiltInRegistries.TRIGGER_TYPES, id("accomplish_dreams"), ACCOMPLISH_DREAMS_TRIGGER);
+		Registry.register(BuiltInRegistries.TRIGGER_TYPES, id("krill_self"), KRILL_SELF);
 
 		CommandRegistrationCallback.EVENT.register(
 				(dispatcher, registryAccess, environment) -> dispatcher.register(KrillCommand.build())

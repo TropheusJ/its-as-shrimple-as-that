@@ -39,11 +39,8 @@ public class ShrimpArrowEntity extends AbstractArrow {
 		super.onHitEntity(hit);
 		if (this.level().isClientSide)
 			return;
-		if (this.ownedBy(hit.getEntity())) {
-			// krilled self
-		}
 		if (hit.getEntity() instanceof LivingEntity living)
-			Krillification.transform(living);
+			Krillification.transform(living, this.getOwner());
 	}
 
 	@Override
