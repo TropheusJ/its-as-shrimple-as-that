@@ -6,6 +6,8 @@ import io.github.tropheusj.its_as_shrimple_as_that.entity.ShrimpEntity;
 import io.github.tropheusj.its_as_shrimple_as_that.item.FriedRiceItem;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -13,17 +15,21 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.levelgen.Heightmap.Types;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +53,9 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 
 	public static final Item SHRIMP_ARROW = new ArrowItem(new Item.Properties());
 
-	public static final MobEffect KRILLED = new MobEffect(MobEffectCategory.BENEFICIAL, 1){}.addAttributeModifier(
+	public static final Item SHRIMP_EGG = new SpawnEggItem(SHRIMP_TYPE, 0xFF977C66, 0xFFFFFFFF, new Properties());
+
+	public static final MobEffect KRILLED = new MobEffect(MobEffectCategory.BENEFICIAL, 0xFF977C66){}.addAttributeModifier(
 			Attributes.SCALE, "5876bde6-b02e-42e9-84c4-e3317b37cb26",
 			-0.66, AttributeModifier.Operation.ADD_VALUE
 	);
@@ -58,6 +66,7 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, id("shrimp_arrow"), SHRIMP_ARROW_TYPE);
 		Registry.register(BuiltInRegistries.ITEM, id("shrimp_arrow"), SHRIMP_ARROW);
 		Registry.register(BuiltInRegistries.ITEM, id("fried_rice"), FRIED_RICE);
+		Registry.register(BuiltInRegistries.ITEM, id("shrimp_spawn_egg"), SHRIMP_EGG);
 		Registry.register(BuiltInRegistries.MOB_EFFECT, id("krilled"), KRILLED);
 
 		CommandRegistrationCallback.EVENT.register(
@@ -65,6 +74,14 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 		);
 
 		FabricDefaultAttributeRegistry.register(SHRIMP_TYPE, ShrimpEntity.createAttributes().build());
+
+		BiomeModifications.addSpawn(
+				BiomeSelectors.tag(BiomeTags.IS_OCEAN),
+				MobCategory.WATER_AMBIENT, SHRIMP_TYPE,
+				50, 3, 5
+		);
+
+		SpawnPlacements.register(SHRIMP_TYPE, SpawnPlacementTypes.IN_WATER, Types.MOTION_BLOCKING_NO_LEAVES, ShrimpEntity::checkShrimpSpawnRules);
 	}
 
 	public static ResourceLocation id(String path) {

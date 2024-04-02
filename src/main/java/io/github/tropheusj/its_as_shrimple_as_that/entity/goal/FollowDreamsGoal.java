@@ -1,10 +1,13 @@
-package io.github.tropheusj.its_as_shrimple_as_that.entity;
+package io.github.tropheusj.its_as_shrimple_as_that.entity.goal;
+
+import io.github.tropheusj.its_as_shrimple_as_that.entity.ShrimpEntity;
 
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Plane;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.level.LevelReader;
@@ -48,7 +51,7 @@ public class FollowDreamsGoal extends MoveToBlockGoal {
 
 	@Override
 	protected boolean isValidTarget(LevelReader level, BlockPos pos) {
-		if (!level.isEmptyBlock(pos))
+		if (!level.isEmptyBlock(pos) && !level.getFluidState(pos).is(FluidTags.WATER))
 			return false;
 		for (Direction direction : Plane.HORIZONTAL) {
 			BlockPos adjacent = pos.relative(direction);

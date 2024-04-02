@@ -2,6 +2,8 @@ package io.github.tropheusj.its_as_shrimple_as_that.entity;
 
 import java.util.Optional;
 
+import io.github.tropheusj.its_as_shrimple_as_that.entity.goal.FollowDreamsGoal;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,17 +13,28 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.SynchedEntityData.Builder;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.PathType;
 
 public class ShrimpEntity extends PathfinderMob {
 	public static final EntityDataAccessor<Optional<BlockPos>> WORKSTATION = SynchedEntityData.defineId(ShrimpEntity.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
@@ -31,6 +44,7 @@ public class ShrimpEntity extends PathfinderMob {
 
 	public ShrimpEntity(EntityType<? extends ShrimpEntity> type, Level level) {
 		super(type, level);
+		this.setPathfindingMalus(PathType.WATER, 0);
 	}
 
 	@Override
@@ -41,8 +55,11 @@ public class ShrimpEntity extends PathfinderMob {
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(1, new FollowDreamsGoal(this, 1, 16, 2));
-		this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 10, 0.1f));
+		this.goalSelector.addGoal(1, new PanicGoal(this, 1.25));
+		this.goalSelector.addGoal(2, new FollowDreamsGoal(this, 1, 16, 2));
+		this.goalSelector.addGoal(5, new RandomStrollGoal(this, 0.45));
+		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 10, 0.1f));
+		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 	}
 
 	@Override
@@ -63,6 +80,31 @@ public class ShrimpEntity extends PathfinderMob {
 			return InteractionResult.CONSUME;
 		}
 		return InteractionResult.PASS;
+	}
+
+	@Override
+	public int getAirSupply() {
+		// never drown
+		return 100;
+	}
+
+	@Override
+	public float getWalkTargetValue(BlockPos blockPos, LevelReader levelReader) {
+		BlockState state = levelReader.getBlockState(blockPos);
+		if (state.is(Blocks.WATER))
+			return 10;
+
+		return levelReader.getPathfindingCostFromLightLevels(blockPos);
+	}
+
+	@Override
+	public boolean checkSpawnObstruction(LevelReader levelReader) {
+		return levelReader.isUnobstructed(this);
+	}
+
+	@Override
+	public boolean isPushedByFluid() {
+		return false;
 	}
 
 	@Override
@@ -96,5 +138,16 @@ public class ShrimpEntity extends PathfinderMob {
 
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 8);
+	}
+
+	// from WaterAnimal
+	public static boolean checkShrimpSpawnRules(EntityType<? extends ShrimpEntity> type, LevelAccessor level,
+												MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+		int i = level.getSeaLevel();
+		int j = i - 13;
+		return pos.getY() >= j
+				&& pos.getY() <= i
+				&& level.getFluidState(pos.below()).is(FluidTags.WATER)
+				&& level.getBlockState(pos.above()).is(Blocks.WATER);
 	}
 }
