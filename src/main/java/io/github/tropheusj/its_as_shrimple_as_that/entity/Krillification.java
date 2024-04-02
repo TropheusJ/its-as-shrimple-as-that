@@ -63,9 +63,7 @@ public class Krillification {
 	}
 
 	private static void transformPlayer(ServerPlayer player, Entity kriller) {
-		// apply status effect
-		Holder<MobEffect> holder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ItsAsShrimpleAsThat.KRILLED);
-		player.addEffect(new MobEffectInstance(holder, 30 * 20));
+		player.addEffect(new MobEffectInstance(ItsAsShrimpleAsThat.KRILLED, 30 * 20));
 		if (player == kriller) {
 			// krilled self
 			ItsAsShrimpleAsThat.KRILL_SELF.trigger(player);
