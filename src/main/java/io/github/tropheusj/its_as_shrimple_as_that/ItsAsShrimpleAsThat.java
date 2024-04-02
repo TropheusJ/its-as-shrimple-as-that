@@ -3,6 +3,7 @@ package io.github.tropheusj.its_as_shrimple_as_that;
 import io.github.tropheusj.its_as_shrimple_as_that.arrow.ShrimpArrowEntity;
 import io.github.tropheusj.its_as_shrimple_as_that.command.KrillCommand;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.ShrimpEntity;
+import io.github.tropheusj.its_as_shrimple_as_that.item.FriedRiceItem;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -19,8 +20,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +43,8 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 			.dimensions(EntityDimensions.fixed(0.5f, 0.5f))
 			.build();
 
+	public static final Item FRIED_RICE = new FriedRiceItem(FriedRiceItem.makeProperties());
+
 	public static final Item SHRIMP_ARROW = new ArrowItem(new Item.Properties());
 
 	public static final MobEffect KRILLED = new MobEffect(MobEffectCategory.BENEFICIAL, 1){}.addAttributeModifier(
@@ -52,6 +57,7 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, id("shrimp"), SHRIMP_TYPE);
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, id("shrimp_arrow"), SHRIMP_ARROW_TYPE);
 		Registry.register(BuiltInRegistries.ITEM, id("shrimp_arrow"), SHRIMP_ARROW);
+		Registry.register(BuiltInRegistries.ITEM, id("fried_rice"), FRIED_RICE);
 		Registry.register(BuiltInRegistries.MOB_EFFECT, id("krilled"), KRILLED);
 
 		CommandRegistrationCallback.EVENT.register(
