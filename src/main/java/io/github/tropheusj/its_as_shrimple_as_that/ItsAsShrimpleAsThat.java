@@ -1,6 +1,7 @@
 package io.github.tropheusj.its_as_shrimple_as_that;
 
 import io.github.tropheusj.its_as_shrimple_as_that.arrow.ShrimpArrowEntity;
+import io.github.tropheusj.its_as_shrimple_as_that.arrow.ShrimpArrowItem;
 import io.github.tropheusj.its_as_shrimple_as_that.command.KrillCommand;
 import io.github.tropheusj.its_as_shrimple_as_that.criteria.KrillSelfTrigger;
 import io.github.tropheusj.its_as_shrimple_as_that.criteria.ShrimpAccomplishDreamsTrigger;
@@ -54,7 +55,7 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 
 	public static final Item FRIED_RICE = new FriedRiceItem(FriedRiceItem.makeProperties());
 
-	public static final Item SHRIMP_ARROW = new ArrowItem(new Item.Properties());
+	public static final Item SHRIMP_ARROW = new ShrimpArrowItem(new Item.Properties());
 
 	public static final Item SHRIMP_EGG = new SpawnEggItem(SHRIMP_TYPE, 0xFF977C66, 0xFFFFFFFF, new Properties());
 

@@ -1,5 +1,6 @@
 package io.github.tropheusj.its_as_shrimple_as_that.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,12 +11,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.SynchedEntityData.Builder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -32,6 +35,9 @@ import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ChargedProjectiles;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -78,6 +84,20 @@ public class ShrimpEntity extends PathfinderMob {
 	@Override
 	@NotNull
 	protected InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
+		ItemStack held = player.getItemInHand(interactionHand);
+		if (held.is(Items.CROSSBOW)) {
+			ChargedProjectiles ammo = held.get(DataComponents.CHARGED_PROJECTILES);
+			if (ammo != null && ammo.isEmpty()) {
+				// lock and load
+				if (!this.level().isClientSide) {
+					ChargedProjectiles newAmmo = ChargedProjectiles.of(new ItemStack(ItsAsShrimpleAsThat.SHRIMP_ARROW));
+					held.set(DataComponents.CHARGED_PROJECTILES, newAmmo);
+					this.makeSound(SoundEvents.ITEM_FRAME_REMOVE_ITEM);
+					this.discard();
+				}
+				return InteractionResult.sidedSuccess(this.level().isClientSide);
+			}
+		}
 		if (!this.level().isClientSide && this.merchant != null && !this.merchant.isTrading()) {
 			this.merchant.setTradingPlayer(player);
 			this.merchant.openTradingScreen(player, this.getDisplayName(), 0);
