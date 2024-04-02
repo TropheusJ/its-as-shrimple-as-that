@@ -2,10 +2,15 @@ package io.github.tropheusj.its_as_shrimple_as_that.entity;
 
 import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
 
+import io.github.tropheusj.its_as_shrimple_as_that.mixin.SimpleCriterionTriggerAccessor;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.network.chat.Component;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.TradeTrigger.TriggerInstance;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
@@ -16,14 +21,22 @@ import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.level.storage.loot.LootContext;
 
 public class ShrimpMerchant implements Merchant {
+	// normal trigger method unnecessarily requires an AbstractVillager
+	@SuppressWarnings("unchecked")
+	public static final SimpleCriterionTriggerAccessor<TriggerInstance> TRADE_TRIGGER = (SimpleCriterionTriggerAccessor<TriggerInstance>) CriteriaTriggers.TRADE;
+
+	private final ShrimpEntity shrimp;
+
 	@Nullable
 	private Player tradingPlayer;
 
 	private MerchantOffers offers;
 
-	public ShrimpMerchant() {
+	public ShrimpMerchant(ShrimpEntity shrimp) {
+		this.shrimp = shrimp;
 		this.offers = new MerchantOffers();
 		this.offers.add(itemForGems(ItsAsShrimpleAsThat.FRIED_RICE, 2));
 	}
@@ -65,8 +78,13 @@ public class ShrimpMerchant implements Merchant {
 	}
 
 	@Override
-	public void notifyTrade(MerchantOffer merchantOffer) {
-		merchantOffer.increaseUses();
+	public void notifyTrade(MerchantOffer offer) {
+		offer.increaseUses();
+		if (this.tradingPlayer instanceof ServerPlayer player) {
+			// replicate TradeTrigger#trigger
+			LootContext lootContext = EntityPredicate.createContext(player, this.shrimp);
+			TRADE_TRIGGER.callTrigger(player, instance -> instance.matches(lootContext, offer.getResult()));
+		}
 	}
 
 	@Override

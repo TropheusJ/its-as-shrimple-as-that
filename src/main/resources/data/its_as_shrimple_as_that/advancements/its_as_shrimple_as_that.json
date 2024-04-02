@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "its_as_shrimple_as_that:fried_rice"
+      "id": "its_as_shrimple_as_that:fried_rice"
     },
     "title": "You're telling me a shrimp fried this rice?",
     "description": "It couldn't be more true.",
@@ -16,9 +16,8 @@
       "trigger": "minecraft:villager_trade",
       "conditions": {
         "item": {
-          "items": [
-            "its_as_shrimple_as_that:fried_rice"
-          ]
+          "items": "its_as_shrimple_as_that:fried_rice",
+          "count": 1
         }
       }
     }

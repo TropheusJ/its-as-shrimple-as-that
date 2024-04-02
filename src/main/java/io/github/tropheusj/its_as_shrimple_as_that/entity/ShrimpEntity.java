@@ -67,7 +67,7 @@ public class ShrimpEntity extends PathfinderMob {
 		super.onSyncedDataUpdated(data);
 		if (data == WORKSTATION) {
 			Optional<BlockPos> workstation = this.entityData.get(WORKSTATION);
-			this.merchant = workstation.isPresent() ? new ShrimpMerchant() : null;
+			this.merchant = workstation.isPresent() ? new ShrimpMerchant(this) : null;
 		}
 	}
 
