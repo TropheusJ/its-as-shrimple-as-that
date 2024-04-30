@@ -28,6 +28,6 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric-api": ">=${fabric_version}",
-    "minecraft": "1.20.5-alpha.24.12.potato"
+    "minecraft": ">=${minecraft_version}"
   }
 }

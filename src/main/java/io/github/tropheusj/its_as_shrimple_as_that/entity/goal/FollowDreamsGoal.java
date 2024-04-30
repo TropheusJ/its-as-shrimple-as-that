@@ -7,11 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Plane;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Blocks;
 
 public class FollowDreamsGoal extends MoveToBlockGoal {
 	private final ShrimpEntity shrimp;
@@ -55,7 +55,7 @@ public class FollowDreamsGoal extends MoveToBlockGoal {
 			return false;
 		for (Direction direction : Plane.HORIZONTAL) {
 			BlockPos adjacent = pos.relative(direction);
-			if (level.getBlockState(adjacent).is(Blocks.FRYING_TABLE))
+			if (level.getBlockState(adjacent).is(BlockTags.CAMPFIRES))
 				return true;
 		}
 		return false;

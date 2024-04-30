@@ -38,12 +38,12 @@ public class ShrimpMerchant implements Merchant {
 	public ShrimpMerchant(ShrimpEntity shrimp) {
 		this.shrimp = shrimp;
 		this.offers = new MerchantOffers();
-		this.offers.add(itemForGems(ItsAsShrimpleAsThat.FRIED_RICE, 2));
+		this.offers.add(itemForEmeralds(ItsAsShrimpleAsThat.FRIED_RICE, 2));
 	}
 
-	private MerchantOffer itemForGems(Item item, int count) {
+	private MerchantOffer itemForEmeralds(Item item, int count) {
 		return new MerchantOffer(
-				new ItemCost(Items.AMBER_GEM, count),
+				new ItemCost(Items.EMERALD, count),
 				new ItemStack(item),
 				Integer.MAX_VALUE, // max uses
 				1, // xp

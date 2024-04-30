@@ -141,11 +141,11 @@ public class ShrimpEntity extends PathfinderMob {
 
 	@Nullable
 	@Override
-	public Entity changeDimension(ServerLevel serverLevel, boolean bl) {
+	public Entity changeDimension(ServerLevel serverLevel) {
 		if (this.merchant != null) {
 			this.merchant.setTradingPlayer(null);
 		}
-		return super.changeDimension(serverLevel, bl);
+		return super.changeDimension(serverLevel);
 	}
 
 	public void becomeChef(BlockPos workstation) {
@@ -155,7 +155,7 @@ public class ShrimpEntity extends PathfinderMob {
 	}
 
 	public void crushDreams() {
-		this.entityData.set(WORKSTATION,Optional.empty());
+		this.entityData.set(WORKSTATION, Optional.empty());
 	}
 
 	public boolean isChef() {
