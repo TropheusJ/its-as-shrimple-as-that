@@ -9,8 +9,12 @@
         }
       }
     },
-    "title": "One in a krillion",
-    "description": "Help a shrimp accomplish its dreams.",
+    "title": {
+      "translate": "advancement.its_as_shrimple_as_that.one_in_a_krillion.title"
+    },
+    "description": {
+      "translate": "advancement.its_as_shrimple_as_that.one_in_a_krillion.description"
+    },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
