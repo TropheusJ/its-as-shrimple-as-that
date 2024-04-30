@@ -11,15 +11,16 @@ import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.ShrimpEntity;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +35,7 @@ public class ShrimpCrossbowRenderer implements BuiltinItemRendererRegistry.Dynam
 
 	private static final Supplier<ShrimpEntity> shrimp = Suppliers.memoize(() -> {
 		ClientLevel level = Minecraft.getInstance().level;
-		Objects.requireNonNull(level);
+		Objects.requireNonNull(level, "shrimp rendered too early");
 		return new ShrimpEntity(ItsAsShrimpleAsThat.SHRIMP_TYPE, level);
 	});
 
@@ -47,15 +48,22 @@ public class ShrimpCrossbowRenderer implements BuiltinItemRendererRegistry.Dynam
 		matrices.pushPose();
 		matrices.translate(0.5, 0.5, 0.5);
 
+		BakedModel crossbowModel = itemRenderer.getModel(normalCrossbow, null, null, 0);
+		boolean leftHand = mode == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || mode == ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
+
 		matrices.pushPose();
-		itemRenderer.renderStatic(normalCrossbow, mode, light, overlay, matrices, buffers, null, 0);
+		Lighting.setupForFlatItems();
+		itemRenderer.render(normalCrossbow, mode, leftHand, matrices, buffers, light, overlay, crossbowModel);
 		matrices.popPose();
 
-		matrices.scale(0.5f, 0.5f, 0.5f);
-		matrices.mulPose(Axis.YP.rotationDegrees(170));
-		matrices.translate(-0.17, 0.5, -0.3);
+		crossbowModel.getTransforms().getTransform(mode).apply(leftHand, matrices);
+		matrices.mulPose(Axis.XP.rotationDegrees(95));
+		matrices.mulPose(Axis.YP.rotationDegrees(225));
+		matrices.mulPose(Axis.ZP.rotationDegrees(3));
+		matrices.translate(0, 0, 0.1);
 
-		entityRenderer.render(shrimp.get(), 0, 0, 0, 0, 1, matrices, buffers, 15728880);
+		Lighting.setupLevel();
+		entityRenderer.render(shrimp.get(), 0, 0, 0, 0, 1, matrices, buffers, light);
 		matrices.popPose();
 	}
 }
