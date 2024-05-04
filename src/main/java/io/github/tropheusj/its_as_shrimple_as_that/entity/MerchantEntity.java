@@ -13,6 +13,8 @@ import net.minecraft.advancements.critereon.TradeTrigger.TriggerInstance;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,34 +23,22 @@ import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootContext;
 
-public class ShrimpMerchant implements Merchant {
+public abstract class MerchantEntity extends PathfinderMob implements Merchant {
 	// normal trigger method unnecessarily requires an AbstractVillager
 	@SuppressWarnings("unchecked")
 	public static final SimpleCriterionTriggerAccessor<TriggerInstance> TRADE_TRIGGER = (SimpleCriterionTriggerAccessor<TriggerInstance>) CriteriaTriggers.TRADE;
 
-	private final ShrimpEntity shrimp;
-
 	@Nullable
 	private Player tradingPlayer;
 
-	private MerchantOffers offers;
+	protected MerchantOffers offers;
 
-	public ShrimpMerchant(ShrimpEntity shrimp) {
-		this.shrimp = shrimp;
+	public MerchantEntity(EntityType<? extends MerchantEntity> type, Level level) {
+		super(type, level);
 		this.offers = new MerchantOffers();
-		this.offers.add(itemForEmeralds(ItsAsShrimpleAsThat.FRIED_RICE, 2));
-	}
-
-	private MerchantOffer itemForEmeralds(Item item, int count) {
-		return new MerchantOffer(
-				new ItemCost(Items.EMERALD, count),
-				new ItemStack(item),
-				Integer.MAX_VALUE, // max uses
-				1, // xp
-				1 // price multiplier
-		);
 	}
 
 	@Override
@@ -82,7 +72,7 @@ public class ShrimpMerchant implements Merchant {
 		offer.increaseUses();
 		if (this.tradingPlayer instanceof ServerPlayer player) {
 			// replicate TradeTrigger#trigger
-			LootContext lootContext = EntityPredicate.createContext(player, this.shrimp);
+			LootContext lootContext = EntityPredicate.createContext(player, this);
 			TRADE_TRIGGER.callTrigger(player, instance -> instance.matches(lootContext, offer.getResult()));
 		}
 	}
@@ -116,5 +106,15 @@ public class ShrimpMerchant implements Merchant {
 	@Override
 	public boolean showProgressBar() {
 		return false;
+	}
+
+	public static MerchantOffer itemForEmeralds(Item item, int count) {
+		return new MerchantOffer(
+				new ItemCost(Items.EMERALD, count),
+				new ItemStack(item),
+				Integer.MAX_VALUE, // max uses
+				1, // xp
+				1 // price multiplier
+		);
 	}
 }

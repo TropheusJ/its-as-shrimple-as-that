@@ -26,7 +26,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -37,6 +36,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ChargedProjectiles;
+import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -45,15 +45,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 
-public class ShrimpEntity extends PathfinderMob {
+public class ShrimpEntity extends MerchantEntity implements Merchant {
 	public static final EntityDataAccessor<Optional<BlockPos>> WORKSTATION = SynchedEntityData.defineId(ShrimpEntity.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
-
-	@Nullable
-	private ShrimpMerchant merchant;
 
 	public ShrimpEntity(EntityType<? extends ShrimpEntity> type, Level level) {
 		super(type, level);
 		this.setPathfindingMalus(PathType.WATER, 0);
+		this.offers.add(itemForEmeralds(ItsAsShrimpleAsThat.FRIED_RICE, 2));
 	}
 
 	@Override
@@ -72,38 +70,33 @@ public class ShrimpEntity extends PathfinderMob {
 	}
 
 	@Override
-	public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
-		super.onSyncedDataUpdated(data);
-		if (data == WORKSTATION) {
-			Optional<BlockPos> workstation = this.entityData.get(WORKSTATION);
-			this.merchant = workstation.isPresent() ? new ShrimpMerchant(this) : null;
-		}
-	}
-
-	@Override
 	@NotNull
 	protected InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
-		ItemStack held = player.getItemInHand(interactionHand);
-		if (held.is(Items.CROSSBOW)) {
-			ChargedProjectiles ammo = held.get(DataComponents.CHARGED_PROJECTILES);
-			if (ammo != null && ammo.isEmpty()) {
-				// lock and load
-				if (player instanceof ServerPlayer serverPlayer) {
-					ChargedProjectiles newAmmo = ChargedProjectiles.of(new ItemStack(ItsAsShrimpleAsThat.SHRIMP_ARROW));
-					held.set(DataComponents.CHARGED_PROJECTILES, newAmmo);
-					this.makeSound(SoundEvents.ITEM_FRAME_REMOVE_ITEM);
-					ItsAsShrimpleAsThat.LOAD_SHRIMP_TRIGGER.trigger(serverPlayer);
-					this.discard();
+		if (!this.level().isClientSide) {
+			ItemStack held = player.getItemInHand(interactionHand);
+			if (held.is(Items.CROSSBOW)) {
+				ChargedProjectiles ammo = held.get(DataComponents.CHARGED_PROJECTILES);
+				if (ammo != null && ammo.isEmpty()) {
+					// lock and load
+					if (player instanceof ServerPlayer serverPlayer) {
+						ChargedProjectiles newAmmo = ChargedProjectiles.of(new ItemStack(ItsAsShrimpleAsThat.SHRIMP_ARROW));
+						held.set(DataComponents.CHARGED_PROJECTILES, newAmmo);
+						this.makeSound(SoundEvents.ITEM_FRAME_REMOVE_ITEM);
+						ItsAsShrimpleAsThat.LOAD_SHRIMP_TRIGGER.trigger(serverPlayer);
+						this.discard();
+					}
+					return InteractionResult.sidedSuccess(this.level().isClientSide);
 				}
-				return InteractionResult.sidedSuccess(this.level().isClientSide);
+			}
+
+			if (this.isChef() && !this.isTrading()) {
+				this.setTradingPlayer(player);
+				this.openTradingScreen(player, this.getDisplayName(), 0);
+				return InteractionResult.CONSUME;
 			}
 		}
-		if (!this.level().isClientSide && this.merchant != null && !this.merchant.isTrading()) {
-			this.merchant.setTradingPlayer(player);
-			this.merchant.openTradingScreen(player, this.getDisplayName(), 0);
-			return InteractionResult.CONSUME;
-		}
-		return InteractionResult.PASS;
+
+		return InteractionResult.sidedSuccess(this.level().isClientSide);
 	}
 
 	@Override
@@ -134,17 +127,13 @@ public class ShrimpEntity extends PathfinderMob {
 	@Override
 	public void remove(RemovalReason removalReason) {
 		super.remove(removalReason);
-		if (this.merchant != null) {
-			this.merchant.setTradingPlayer(null);
-		}
+		this.setTradingPlayer(null);
 	}
 
 	@Nullable
 	@Override
 	public Entity changeDimension(ServerLevel serverLevel) {
-		if (this.merchant != null) {
-			this.merchant.setTradingPlayer(null);
-		}
+		this.setTradingPlayer(null);
 		return super.changeDimension(serverLevel);
 	}
 
