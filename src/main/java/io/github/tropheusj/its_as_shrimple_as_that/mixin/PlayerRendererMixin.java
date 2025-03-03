@@ -46,7 +46,7 @@ public class PlayerRendererMixin {
 			matrices.translate(0, -1.5, 0);
 			matrices.mulPose(Axis.YP.rotationDegrees(player.getYRot() + 180));
 			VertexConsumer buffer = buffers.getBuffer(RenderType.entityCutout(ShrimpRenderer.TEXTURE));
-			this.shrimpModel.renderToBuffer(matrices, buffer, i, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+			this.shrimpModel.renderToBuffer(matrices, buffer, i, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 			matrices.popPose();
 			ci.cancel();
 		}

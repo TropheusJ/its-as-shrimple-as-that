@@ -39,7 +39,7 @@ public class ShrimpArrowRenderer extends EntityRenderer<ShrimpArrowEntity> {
 
 		VertexConsumer vertexConsumer = buffers.getBuffer(RenderType.entityCutout(this.getTextureLocation(shrimp)));
 
-		this.model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+		this.model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		matrices.popPose();
 	}
 

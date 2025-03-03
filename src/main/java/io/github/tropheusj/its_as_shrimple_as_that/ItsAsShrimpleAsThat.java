@@ -16,7 +16,6 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,7 +24,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
@@ -45,16 +43,13 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 	public static final String ID = "its_as_shrimple_as_that";
 	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
 
-	public static final EntityType<ShrimpEntity> SHRIMP_TYPE = FabricEntityTypeBuilder.create()
-			.entityFactory(ShrimpEntity::new)
-			.spawnGroup(MobCategory.WATER_AMBIENT)
-			.dimensions(EntityDimensions.fixed(0.9f, 0.5f))
-			.build();
+	public static final EntityType<ShrimpEntity> SHRIMP_TYPE = EntityType.Builder.of(
+			ShrimpEntity::new, MobCategory.WATER_AMBIENT
+			).sized(0.9f, 0.5f).build();
 
-	public static final EntityType<ShrimpArrowEntity> SHRIMP_ARROW_TYPE = FabricEntityTypeBuilder.create()
-			.entityFactory(ShrimpArrowEntity::new)
-			.dimensions(EntityDimensions.fixed(0.5f, 0.5f))
-			.build();
+	public static final EntityType<ShrimpArrowEntity> SHRIMP_ARROW_TYPE = EntityType.Builder.of(
+			ShrimpArrowEntity::new, MobCategory.MISC
+	).sized(0.5f, 0.5f).build();
 
 	public static final Item FRIED_RICE = new FriedRiceItem(FriedRiceItem.makeProperties());
 
@@ -62,12 +57,14 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 
 	public static final Item SHRIMP_EGG = new SpawnEggItem(SHRIMP_TYPE, 0xFF977C66, 0xFFFFFFFF, new Properties());
 
+	public static final ResourceLocation KRILLED_SIZE_MODIFIER = id("krilled_size_modifier");
+
 	public static final Holder<MobEffect> KRILLED = Registry.registerForHolder(
 			BuiltInRegistries.MOB_EFFECT,
 			id("krilled"),
 			new MobEffect(MobEffectCategory.BENEFICIAL, 0xFF977C66){}
 					.addAttributeModifier(
-							Attributes.SCALE, "5876bde6-b02e-42e9-84c4-e3317b37cb26",
+							Attributes.SCALE, KRILLED_SIZE_MODIFIER,
 							-0.75, AttributeModifier.Operation.ADD_VALUE
 					)
 	);
@@ -107,6 +104,6 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 	}
 
 	public static ResourceLocation id(String path) {
-		return new ResourceLocation(ID, path);
+		return ResourceLocation.fromNamespaceAndPath(ID, path);
 	}
 }

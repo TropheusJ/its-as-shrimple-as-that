@@ -6,6 +6,8 @@ import java.util.Optional;
 import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.goal.FollowDreamsGoal;
 
+import net.minecraft.world.level.portal.DimensionTransition;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,7 +17,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.SynchedEntityData.Builder;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
@@ -36,7 +37,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ChargedProjectiles;
-import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -45,7 +45,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 
-public class ShrimpEntity extends MerchantEntity implements Merchant {
+public class ShrimpEntity extends MerchantEntity {
 	public static final EntityDataAccessor<Optional<BlockPos>> WORKSTATION = SynchedEntityData.defineId(ShrimpEntity.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
 
 	public ShrimpEntity(EntityType<? extends ShrimpEntity> type, Level level) {
@@ -130,11 +130,11 @@ public class ShrimpEntity extends MerchantEntity implements Merchant {
 		this.setTradingPlayer(null);
 	}
 
-	@Nullable
 	@Override
-	public Entity changeDimension(ServerLevel serverLevel) {
+	@Nullable
+	public Entity changeDimension(DimensionTransition dimensionTransition) {
 		this.setTradingPlayer(null);
-		return super.changeDimension(serverLevel);
+		return super.changeDimension(dimensionTransition);
 	}
 
 	public void becomeChef(BlockPos workstation) {

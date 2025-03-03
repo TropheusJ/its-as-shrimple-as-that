@@ -1,7 +1,5 @@
 package io.github.tropheusj.its_as_shrimple_as_that.entity;
 
-import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
-
 import io.github.tropheusj.its_as_shrimple_as_that.mixin.SimpleCriterionTriggerAccessor;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +34,7 @@ public abstract class MerchantEntity extends PathfinderMob implements Merchant {
 
 	protected MerchantOffers offers;
 
-	public MerchantEntity(EntityType<? extends MerchantEntity> type, Level level) {
+	protected MerchantEntity(EntityType<? extends MerchantEntity> type, Level level) {
 		super(type, level);
 		this.offers = new MerchantOffers();
 	}

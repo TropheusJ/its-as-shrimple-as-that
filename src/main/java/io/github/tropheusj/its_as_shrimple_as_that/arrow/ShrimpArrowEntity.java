@@ -4,6 +4,7 @@ import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.ShrimpEntity;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.Krillification;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,10 +37,10 @@ public class ShrimpArrowEntity extends AbstractArrow {
 
 	@Override
 	protected void onHitEntity(EntityHitResult hit) {
-		if (this.level().isClientSide)
+		if (!(this.level() instanceof ServerLevel level))
 			return;
 		if (hit.getEntity() instanceof LivingEntity living)
-			Krillification.transform(living, this.getOwner());
+			Krillification.transform(living, level, this.getOwner());
 		this.spawnShrimp(hit.getLocation());
 		this.discard();
 	}

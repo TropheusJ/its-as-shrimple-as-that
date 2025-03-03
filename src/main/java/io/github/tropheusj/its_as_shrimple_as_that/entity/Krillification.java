@@ -16,10 +16,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class Krillification {
-	public static void transform(LivingEntity entity, @Nullable Entity kriller) {
-		if (!(entity.level() instanceof ServerLevel level))
-			throw new IllegalStateException();
-
+	public static void transform(LivingEntity entity, ServerLevel level, @Nullable Entity kriller) {
 		if (entity instanceof ShrimpEntity)
 			return;
 
