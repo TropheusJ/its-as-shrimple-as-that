@@ -16,9 +16,18 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class Krillification {
+	// namespacing this (which adds a colon) breaks the command
+	public static final String KRILLABLE_TAG = "krillable";
+
 	public static void transform(LivingEntity entity, ServerLevel level, @Nullable Entity kriller) {
 		if (entity instanceof ShrimpEntity)
 			return;
+
+		if (level.getGameRules().getRule(ItsAsShrimpleAsThat.KRILLING_REQUIRES_TAG).get()) {
+			if (!entity.getTags().contains(KRILLABLE_TAG)) {
+				return;
+			}
+		}
 
 		if (kriller instanceof ServerPlayer player)
 			ItsAsShrimpleAsThat.KRILL_TRIGGER.trigger(player);

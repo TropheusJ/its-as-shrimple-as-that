@@ -14,6 +14,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
+import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Holder;
@@ -34,6 +36,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 
 import org.slf4j.Logger;
@@ -73,6 +76,12 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 	public static final KrillTrigger KRILL_TRIGGER = new KrillTrigger();
 	public static final KrillSelfTrigger KRILL_SELF_TRIGGER = new KrillSelfTrigger();
 	public static final LoadShrimpTrigger LOAD_SHRIMP_TRIGGER = new LoadShrimpTrigger();
+
+	public static final GameRules.Key<GameRules.BooleanValue> KRILLING_REQUIRES_TAG = GameRuleRegistry.register(
+			id("krilling_requires_tag").toString(),
+			GameRules.Category.MOBS,
+			GameRuleFactory.createBooleanRule(false)
+	);
 
 	@Override
 	public void onInitialize() {
