@@ -28,7 +28,7 @@ public class KrillCommand {
 	private static int krill(CommandSourceStack source, Collection<? extends Entity> collection) {
 		for (Entity entity : collection) {
 			if (entity instanceof LivingEntity living)
-				Krillification.transform(living, source.getLevel(), source.getEntity());
+				Krillification.transform(living, source.getLevel(), source.getEntity(), true);
 		}
 
 		Component feedback = getFeedback(collection);

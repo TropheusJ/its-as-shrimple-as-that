@@ -1,5 +1,9 @@
 package io.github.tropheusj.its_as_shrimple_as_that.mixin;
 
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,9 +26,13 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.player.Player;
 
 @Mixin(PlayerRenderer.class)
-public class PlayerRendererMixin {
+public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
 	@Unique
 	private ShrimpModel<Player> shrimpModel;
+
+	protected PlayerRendererMixin(Context context, PlayerModel<AbstractClientPlayer> entityModel, float f) {
+		super(context, entityModel, f);
+	}
 
 	@Inject(method = "<init>", at = @At("TAIL"))
 	private void onInit(Context context, boolean bl, CallbackInfo ci) {
@@ -37,7 +45,8 @@ public class PlayerRendererMixin {
 			cancellable = true
 	)
 	private void renderShrimpInstead(AbstractClientPlayer player, float f, float g, PoseStack matrices, MultiBufferSource buffers, int i, CallbackInfo ci) {
-		if (player.hasEffect(ItsAsShrimpleAsThat.KRILLED)) {
+		AttributeInstance krilledAttribute = player.getAttribute(ItsAsShrimpleAsThat.KRILLED_ATTRIBUTE);
+		if (krilledAttribute != null && krilledAttribute.getValue() > 0) {
 			matrices.pushPose();
 			matrices.scale(-1, -1, 1);
 			matrices.translate(0, -1.5, 0);
@@ -46,6 +55,10 @@ public class PlayerRendererMixin {
 			this.shrimpModel.renderToBuffer(matrices, buffer, i, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 			matrices.popPose();
 			ci.cancel();
+
+			if (this.shouldShowName(player)) {
+				this.renderNameTag(player, player.getDisplayName(), matrices, buffers, i, g);
+			}
 		}
 	}
 }

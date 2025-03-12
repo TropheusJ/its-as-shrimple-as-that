@@ -19,11 +19,11 @@ public class Krillification {
 	// namespacing this (which adds a colon) breaks the command
 	public static final String KRILLABLE_TAG = "krillable";
 
-	public static void transform(LivingEntity entity, ServerLevel level, @Nullable Entity kriller) {
+	public static void transform(LivingEntity entity, ServerLevel level, @Nullable Entity kriller, boolean force) {
 		if (entity instanceof ShrimpEntity)
 			return;
 
-		if (level.getGameRules().getRule(ItsAsShrimpleAsThat.KRILLING_REQUIRES_TAG).get()) {
+		if (!force && level.getGameRules().getRule(ItsAsShrimpleAsThat.KRILLING_REQUIRES_TAG).get()) {
 			if (!entity.getTags().contains(KRILLABLE_TAG)) {
 				return;
 			}
@@ -69,7 +69,7 @@ public class Krillification {
 	}
 
 	private static void transformPlayer(ServerPlayer player, Entity kriller) {
-		player.addEffect(new MobEffectInstance(ItsAsShrimpleAsThat.KRILLED, 30 * 20));
+		player.addEffect(new MobEffectInstance(ItsAsShrimpleAsThat.KRILLED_EFFECT, 30 * 20));
 		if (player == kriller) {
 			// krilled self
 			ItsAsShrimpleAsThat.KRILL_SELF_TRIGGER.trigger(player);

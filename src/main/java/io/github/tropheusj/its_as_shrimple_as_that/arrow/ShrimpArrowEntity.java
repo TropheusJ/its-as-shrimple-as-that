@@ -40,7 +40,7 @@ public class ShrimpArrowEntity extends AbstractArrow {
 		if (!(this.level() instanceof ServerLevel level))
 			return;
 		if (hit.getEntity() instanceof LivingEntity living)
-			Krillification.transform(living, level, this.getOwner());
+			Krillification.transform(living, level, this.getOwner(), false);
 		this.spawnShrimp(hit.getLocation());
 		this.discard();
 	}

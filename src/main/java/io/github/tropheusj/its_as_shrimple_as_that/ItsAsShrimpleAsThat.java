@@ -30,8 +30,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
@@ -60,15 +62,29 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 
 	public static final Item SHRIMP_EGG = new SpawnEggItem(SHRIMP_TYPE, 0xFF977C66, 0xFFFFFFFF, new Properties());
 
+	// this attribute is used as a flag to determine if players are krilled,
+	// since effects aren't synced, just their attributes.
+	// this is done instead of adding a flag so it stays in sync with the status effect.
+	public static final Holder<Attribute> KRILLED_ATTRIBUTE = Registry.registerForHolder(
+			BuiltInRegistries.ATTRIBUTE, id("krilled"), new RangedAttribute(
+					"attribute.name.its_as_shrimple_as_that.krilled",
+					0, 0, 1
+			).setSyncable(true)
+	);
+
+	public static final ResourceLocation KRILLED_ATTRIBUTE_MODIFIER = id("krilled");
 	public static final ResourceLocation KRILLED_SIZE_MODIFIER = id("krilled_size_modifier");
 
-	public static final Holder<MobEffect> KRILLED = Registry.registerForHolder(
+	public static final Holder<MobEffect> KRILLED_EFFECT = Registry.registerForHolder(
 			BuiltInRegistries.MOB_EFFECT,
 			id("krilled"),
 			new MobEffect(MobEffectCategory.BENEFICIAL, 0xFF977C66){}
 					.addAttributeModifier(
 							Attributes.SCALE, KRILLED_SIZE_MODIFIER,
 							-0.75, AttributeModifier.Operation.ADD_VALUE
+					).addAttributeModifier(
+							KRILLED_ATTRIBUTE, KRILLED_ATTRIBUTE_MODIFIER,
+							1, AttributeModifier.Operation.ADD_VALUE
 					)
 	);
 
