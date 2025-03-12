@@ -1,10 +1,7 @@
 package io.github.tropheusj.its_as_shrimple_as_that.item;
 
-import java.util.Objects;
-import java.util.function.Supplier;
-
-import com.google.common.base.Suppliers;
-
+import java.util.Map;
+import com.google.common.collect.MapMaker;
 import com.mojang.math.Axis;
 
 import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
@@ -16,7 +13,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -26,6 +22,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ChargedProjectiles;
+import net.minecraft.world.level.Level;
 
 public class ShrimpCrossbowRenderer implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 	private static final ItemStack normalCrossbow = Util.make(
@@ -33,11 +30,7 @@ public class ShrimpCrossbowRenderer implements BuiltinItemRendererRegistry.Dynam
 			stack -> stack.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.of(new ItemStack(Items.ARROW)))
 	);
 
-	private static final Supplier<ShrimpEntity> shrimp = Suppliers.memoize(() -> {
-		ClientLevel level = Minecraft.getInstance().level;
-		Objects.requireNonNull(level, "shrimp rendered too early");
-		return new ShrimpEntity(ItsAsShrimpleAsThat.SHRIMP_TYPE, level);
-	});
+	private static final Map<Level, ShrimpEntity> shrimpCache = new MapMaker().weakKeys().makeMap();
 
 	@Override
 	public void render(ItemStack stack, ItemDisplayContext mode, PoseStack matrices, MultiBufferSource buffers, int light, int overlay) {
@@ -63,7 +56,14 @@ public class ShrimpCrossbowRenderer implements BuiltinItemRendererRegistry.Dynam
 		matrices.translate(0, 0, 0.1);
 
 		Lighting.setupLevel();
-		entityRenderer.render(shrimp.get(), 0, 0, 0, 0, 1, matrices, buffers, light);
+		entityRenderer.render(getShrimp(), 0, 0, 0, 0, 1, matrices, buffers, light);
 		matrices.popPose();
+	}
+
+	private static ShrimpEntity getShrimp() {
+		return shrimpCache.computeIfAbsent(
+				Minecraft.getInstance().level,
+				level -> new ShrimpEntity(ItsAsShrimpleAsThat.SHRIMP_TYPE, level)
+		);
 	}
 }
