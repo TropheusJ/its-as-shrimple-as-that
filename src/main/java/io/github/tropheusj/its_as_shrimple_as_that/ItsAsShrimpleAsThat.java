@@ -94,9 +94,7 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 	public static final LoadShrimpTrigger LOAD_SHRIMP_TRIGGER = new LoadShrimpTrigger();
 
 	public static final GameRules.Key<GameRules.BooleanValue> KRILLING_REQUIRES_TAG = GameRuleRegistry.register(
-			id("krilling_requires_tag").toString(),
-			GameRules.Category.MOBS,
-			GameRuleFactory.createBooleanRule(false)
+			ID + ":krillingRequiresTag", GameRules.Category.MOBS, GameRuleFactory.createBooleanRule(false)
 	);
 
 	@Override
