@@ -1,6 +1,13 @@
 package io.github.tropheusj.its_as_shrimple_as_that.entity;
 
-import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
+import io.github.tropheusj.its_as_shrimple_as_that.registry.ItsAsShrimpleAsThatEffects;
+import io.github.tropheusj.its_as_shrimple_as_that.registry.ItsAsShrimpleAsThatEntities;
+import io.github.tropheusj.its_as_shrimple_as_that.registry.ItsAsShrimpleAsThatGameRules;
+import io.github.tropheusj.its_as_shrimple_as_that.registry.ItsAsShrimpleAsThatTriggers;
+import net.minecraft.world.entity.ConversionParams;
+import net.minecraft.world.entity.EntitySpawnReason;
+
+import net.minecraft.world.entity.Mob;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -23,14 +30,15 @@ public class Krillification {
 		if (entity instanceof ShrimpEntity)
 			return;
 
-		if (!force && level.getGameRules().getRule(ItsAsShrimpleAsThat.KRILLING_REQUIRES_TAG).get()) {
+		if (!force && level.getGameRules().getRule(ItsAsShrimpleAsThatGameRules.KRILLING_REQUIRES_TAG).get()) {
 			if (!entity.getTags().contains(KRILLABLE_TAG)) {
 				return;
 			}
 		}
 
-		if (kriller instanceof ServerPlayer player)
-			ItsAsShrimpleAsThat.KRILL_TRIGGER.trigger(player);
+		if (kriller instanceof ServerPlayer player) {
+			ItsAsShrimpleAsThatTriggers.KRILL.trigger(player);
+		}
 
 		// particles
 		AABB bounds = entity.getBoundingBox();
@@ -59,20 +67,33 @@ public class Krillification {
 			return;
 		}
 
-		// replace existing entity
-		ShrimpEntity krill = ItsAsShrimpleAsThat.SHRIMP_TYPE.create(level);
-		if (krill != null) {
-			krill.setPos(entity.position());
-			level.addFreshEntity(krill);
-			entity.discard();
-		}
+		convert(entity);
 	}
 
 	private static void transformPlayer(ServerPlayer player, Entity kriller) {
-		player.addEffect(new MobEffectInstance(ItsAsShrimpleAsThat.KRILLED_EFFECT, 30 * 20));
+		player.addEffect(new MobEffectInstance(ItsAsShrimpleAsThatEffects.KRILLED, 30 * 20));
 		if (player == kriller) {
 			// krilled self
-			ItsAsShrimpleAsThat.KRILL_SELF_TRIGGER.trigger(player);
+			ItsAsShrimpleAsThatTriggers.KRILL_SELF.trigger(player);
+		}
+	}
+
+	/**
+	 * Creates and spawns a new shrimp entity in the given entity's place.
+	 */
+	private static void convert(LivingEntity entity) {
+		if (entity instanceof Mob mob) {
+			ConversionParams params = ConversionParams.single(mob, false, false);
+			// convertTo adds the entity to the level
+			mob.convertTo(ItsAsShrimpleAsThatEntities.SHRIMP, params, $ -> {});
+		} else {
+			ServerLevel level = (ServerLevel) entity.level();
+			ShrimpEntity krill = ItsAsShrimpleAsThatEntities.SHRIMP.create(level, EntitySpawnReason.CONVERSION);
+			if (krill != null) {
+				krill.setPos(entity.position());
+				level.addFreshEntity(krill);
+				entity.discard();
+			}
 		}
 	}
 }

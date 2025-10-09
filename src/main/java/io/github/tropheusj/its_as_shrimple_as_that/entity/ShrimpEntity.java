@@ -3,10 +3,13 @@ package io.github.tropheusj.its_as_shrimple_as_that.entity;
 import java.util.List;
 import java.util.Optional;
 
-import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.goal.FollowDreamsGoal;
 
-import net.minecraft.world.level.portal.DimensionTransition;
+import io.github.tropheusj.its_as_shrimple_as_that.registry.ItsAsShrimpleAsThatItems;
+import io.github.tropheusj.its_as_shrimple_as_that.registry.ItsAsShrimpleAsThatTriggers;
+import net.minecraft.world.entity.EntitySpawnReason;
+
+import net.minecraft.world.level.portal.TeleportTransition;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +29,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -51,7 +53,7 @@ public class ShrimpEntity extends MerchantEntity {
 	public ShrimpEntity(EntityType<? extends ShrimpEntity> type, Level level) {
 		super(type, level);
 		this.setPathfindingMalus(PathType.WATER, 0);
-		this.offers.add(itemForEmeralds(ItsAsShrimpleAsThat.FRIED_RICE, 2));
+		this.offers.add(itemForEmeralds(ItsAsShrimpleAsThatItems.FRIED_RICE, 2));
 	}
 
 	@Override
@@ -72,20 +74,20 @@ public class ShrimpEntity extends MerchantEntity {
 	@Override
 	@NotNull
 	protected InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
-		if (!this.level().isClientSide) {
+		if (!this.level().isClientSide()) {
 			ItemStack held = player.getItemInHand(interactionHand);
 			if (held.is(Items.CROSSBOW)) {
 				ChargedProjectiles ammo = held.get(DataComponents.CHARGED_PROJECTILES);
 				if (ammo != null && ammo.isEmpty()) {
 					// lock and load
 					if (player instanceof ServerPlayer serverPlayer) {
-						ChargedProjectiles newAmmo = ChargedProjectiles.of(new ItemStack(ItsAsShrimpleAsThat.SHRIMP_ARROW));
+						ChargedProjectiles newAmmo = ChargedProjectiles.of(new ItemStack(ItsAsShrimpleAsThatItems.SHRIMP_ARROW));
 						held.set(DataComponents.CHARGED_PROJECTILES, newAmmo);
 						this.makeSound(SoundEvents.ITEM_FRAME_REMOVE_ITEM);
-						ItsAsShrimpleAsThat.LOAD_SHRIMP_TRIGGER.trigger(serverPlayer);
+						ItsAsShrimpleAsThatTriggers.LOAD_SHRIMP.trigger(serverPlayer);
 						this.discard();
 					}
-					return InteractionResult.sidedSuccess(this.level().isClientSide);
+					return InteractionResult.SUCCESS;
 				}
 			}
 
@@ -96,7 +98,7 @@ public class ShrimpEntity extends MerchantEntity {
 			}
 		}
 
-		return InteractionResult.sidedSuccess(this.level().isClientSide);
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
@@ -130,17 +132,19 @@ public class ShrimpEntity extends MerchantEntity {
 		this.setTradingPlayer(null);
 	}
 
-	@Override
 	@Nullable
-	public Entity changeDimension(DimensionTransition dimensionTransition) {
+	@Override
+	public Entity teleport(TeleportTransition teleportTransition) {
 		this.setTradingPlayer(null);
-		return super.changeDimension(dimensionTransition);
+		return super.teleport(teleportTransition);
 	}
 
 	public void becomeChef(BlockPos workstation) {
 		this.entityData.set(WORKSTATION, Optional.of(workstation));
-		List<ServerPlayer> nearbyPlayers = level().getEntitiesOfClass(ServerPlayer.class, new AABB(this.blockPosition()).inflate(16));
-		nearbyPlayers.forEach(ItsAsShrimpleAsThat.ACCOMPLISH_DREAMS_TRIGGER::trigger);
+		List<ServerPlayer> nearbyPlayers = this.level().getEntitiesOfClass(
+				ServerPlayer.class, new AABB(this.blockPosition()).inflate(16)
+		);
+		nearbyPlayers.forEach(ItsAsShrimpleAsThatTriggers.ACCOMPLISH_DREAMS::trigger);
 	}
 
 	public void crushDreams() {
@@ -157,7 +161,7 @@ public class ShrimpEntity extends MerchantEntity {
 
 	// from WaterAnimal
 	public static boolean checkShrimpSpawnRules(EntityType<? extends ShrimpEntity> type, LevelAccessor level,
-												MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+												EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		int i = level.getSeaLevel();
 		int j = i - 13;
 		return pos.getY() >= j

@@ -86,6 +86,11 @@ public abstract class MerchantEntity extends PathfinderMob implements Merchant {
 		return false;
 	}
 
+	@Override
+	public boolean stillValid(Player player) {
+		return this.getTradingPlayer() == player && this.isAlive() && player.canInteractWithEntity(this, 4.0);
+	}
+
 	// don't care
 
 	@Override

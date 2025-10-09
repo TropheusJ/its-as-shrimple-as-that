@@ -1,11 +1,11 @@
 package io.github.tropheusj.its_as_shrimple_as_that.arrow;
 
-import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.ShrimpEntity;
 import io.github.tropheusj.its_as_shrimple_as_that.entity.Krillification;
+import io.github.tropheusj.its_as_shrimple_as_that.registry.ItsAsShrimpleAsThatEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -28,7 +28,7 @@ public class ShrimpArrowEntity extends AbstractArrow {
 
 	@Override
 	protected void onHitBlock(BlockHitResult hit) {
-		if (this.level().isClientSide)
+		if (this.level().isClientSide())
 			return;
 		// free him
 		BlockPos offset = hit.getBlockPos().relative(hit.getDirection());
@@ -46,9 +46,9 @@ public class ShrimpArrowEntity extends AbstractArrow {
 	}
 
 	private void spawnShrimp(Vec3 pos) {
-		ShrimpEntity shrimp = ItsAsShrimpleAsThat.SHRIMP_TYPE.create(this.level());
+		ShrimpEntity shrimp = ItsAsShrimpleAsThatEntities.SHRIMP.create(this.level(), EntitySpawnReason.TRIGGERED);
 		if (shrimp != null) {
-			shrimp.moveTo(pos);
+			shrimp.snapTo(pos);
 			this.level().addFreshEntity(shrimp);
 			this.discard();
 		}

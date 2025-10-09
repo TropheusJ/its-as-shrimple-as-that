@@ -1,11 +1,10 @@
 package io.github.tropheusj.its_as_shrimple_as_that.entity.render;
 
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.client.animation.KeyframeAnimation;
+import net.minecraft.client.model.EntityModel;
 
 import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -13,21 +12,16 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
-public class ShrimpModel<T extends Entity> extends HierarchicalModel<T> {
+public class ShrimpModel<T extends LivingEntityRenderState> extends EntityModel<T> {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ItsAsShrimpleAsThat.id("shrimp"), "main");
 
-	private final ModelPart root;
+	private final KeyframeAnimation walkAnimation;
 
 	public ShrimpModel(EntityRendererProvider.Context ctx) {
-		this.root = ctx.bakeLayer(LAYER_LOCATION);
-	}
-
-	@Override
-	@NotNull
-	public ModelPart root() {
-		return this.root;
+		super(ctx.bakeLayer(LAYER_LOCATION));
+		this.walkAnimation = ShrimpMoveAnimation.WALK.bake(this.root());
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -84,8 +78,8 @@ public class ShrimpModel<T extends Entity> extends HierarchicalModel<T> {
 	}
 
 	@Override
-	public void setupAnim(T entity, float f, float g, float h, float i, float j) {
-		this.root().getAllParts().forEach(ModelPart::resetPose);
-		animateWalk(ShrimpMoveAnimation.WALK, f, g, 2, 2);
+	public void setupAnim(T state) {
+		super.setupAnim(state);
+		this.walkAnimation.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, 2, 2);
 	}
 }

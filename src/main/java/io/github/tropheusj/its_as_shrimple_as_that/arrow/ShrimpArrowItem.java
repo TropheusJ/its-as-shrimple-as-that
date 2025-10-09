@@ -1,8 +1,6 @@
 package io.github.tropheusj.its_as_shrimple_as_that.arrow;
 
-import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
-
-import org.jetbrains.annotations.NotNull;
+import io.github.tropheusj.its_as_shrimple_as_that.registry.ItsAsShrimpleAsThatEntities;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -19,7 +17,7 @@ public class ShrimpArrowItem extends ArrowItem {
 
 	@Override
 	public AbstractArrow createArrow(Level level, ItemStack itemStack, LivingEntity shooter, @Nullable ItemStack itemStack2) {
-		ShrimpArrowEntity arrow = new ShrimpArrowEntity(ItsAsShrimpleAsThat.SHRIMP_ARROW_TYPE, level);
+		ShrimpArrowEntity arrow = new ShrimpArrowEntity(ItsAsShrimpleAsThatEntities.SHRIMP_ARROW, level);
 		arrow.setPos(shooter.getX(), shooter.getEyeY() - 0.1, shooter.getZ());
 		arrow.setOwner(shooter);
 		return arrow;

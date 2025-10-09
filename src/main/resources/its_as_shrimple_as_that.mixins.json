@@ -8,8 +8,8 @@
     "SimpleCriterionTriggerAccessor"
   ],
   "client": [
-    "AdvancementWidgetMixin",
-    "PlayerRendererMixin"
+    "AvatarRendererMixin",
+    "LivingEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
