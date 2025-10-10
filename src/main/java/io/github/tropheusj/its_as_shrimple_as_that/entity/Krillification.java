@@ -9,6 +9,8 @@ import net.minecraft.world.entity.EntitySpawnReason;
 
 import net.minecraft.world.entity.Mob;
 
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -85,7 +87,13 @@ public class Krillification {
 		if (entity instanceof Mob mob) {
 			ConversionParams params = ConversionParams.single(mob, false, false);
 			// convertTo adds the entity to the level
-			mob.convertTo(ItsAsShrimpleAsThatEntities.SHRIMP, params, $ -> {});
+			mob.convertTo(ItsAsShrimpleAsThatEntities.SHRIMP, params, shrimp -> {
+				// FlyingMoveControl enables noGravity, and conversion copies that.
+				// hilarity ensues, but probably for the best to fix that.
+				if (mob.getMoveControl() instanceof FlyingMoveControl) {
+					shrimp.setNoGravity(false);
+				}
+			});
 		} else {
 			ServerLevel level = (ServerLevel) entity.level();
 			ShrimpEntity krill = ItsAsShrimpleAsThatEntities.SHRIMP.create(level, EntitySpawnReason.CONVERSION);
