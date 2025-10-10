@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -32,8 +33,11 @@ public class LivingEntityRendererMixin {
 							  RenderType renderType, int light, int overlay, int color, TextureAtlasSprite sprite,
 							  int outlineColor, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay, Operation<Void> original) {
 		if (this instanceof AvatarRendererExtensions avatar) {
-			EntityRenderState state = (EntityRenderState) context;
+			LivingEntityRenderState state = (LivingEntityRenderState) context;
 			if (state.getData(ItsAsShrimpleAsThatRenderStateDataKeys.KRILLED) != null) {
+				float inverseScale = 1 / state.scale;
+				matrices.scale(inverseScale, inverseScale, inverseScale);
+				matrices.translate(0, -1.1, 0);
 				model = avatar.its_as_shrimple_as_that$shrimpModel();
 			}
 		}

@@ -1,5 +1,7 @@
 package io.github.tropheusj.its_as_shrimple_as_that.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+
 import io.github.tropheusj.its_as_shrimple_as_that.ext.AvatarRendererExtensions;
 import io.github.tropheusj.its_as_shrimple_as_that.registry.ItsAsShrimpleAsThatAttributes;
 import io.github.tropheusj.its_as_shrimple_as_that.registry.ItsAsShrimpleAsThatRenderStateDataKeys;
@@ -53,6 +55,14 @@ public abstract class AvatarRendererMixin implements AvatarRendererExtensions {
 		if (state.getData(ItsAsShrimpleAsThatRenderStateDataKeys.KRILLED) != null) {
 			cir.setReturnValue(ShrimpRenderer.TEXTURE);
 		}
+	}
+
+	@ModifyReturnValue(
+			method = "shouldRenderLayers(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)Z",
+			at = @At("RETURN")
+	)
+	private boolean noLayersForShrimp(boolean original, AvatarRenderState state) {
+		return original && state.getData(ItsAsShrimpleAsThatRenderStateDataKeys.KRILLED) == null;
 	}
 
 	@Override
