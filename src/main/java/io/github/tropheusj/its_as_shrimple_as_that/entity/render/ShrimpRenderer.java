@@ -17,7 +17,7 @@ public class ShrimpRenderer extends MobRenderer<ShrimpEntity, ShrimpRenderState,
 	public static final float SHADOW_RADIUS = 0.5f;
 
 	public ShrimpRenderer(Context context) {
-		super(context, new ShrimpModel<>(context), SHADOW_RADIUS);
+		super(context, new ShrimpModel<>(context.getModelSet()), SHADOW_RADIUS);
 	}
 
 	@Override

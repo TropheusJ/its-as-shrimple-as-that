@@ -1,0 +1,73 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/crossbow_arrow"
+        },
+        "when": "arrow"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/crossbow_firework"
+        },
+        "when": "rocket"
+      },
+      {
+        "model": {
+          "type": "composite",
+          "models": [
+            {
+              "type": "model",
+              "model": "item/crossbow_arrow"
+            },
+            {
+              "type": "special",
+              "model": {
+                "type": "its_as_shrimple_as_that:shrimp"
+              },
+              "base": "item/crossbow"
+            }
+          ]
+        },
+        "when": "its_as_shrimple_as_that:shrimp"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:condition",
+      "on_false": {
+        "type": "minecraft:model",
+        "model": "minecraft:item/crossbow"
+      },
+      "on_true": {
+        "type": "minecraft:range_dispatch",
+        "entries": [
+          {
+            "model": {
+              "type": "minecraft:model",
+              "model": "minecraft:item/crossbow_pulling_1"
+            },
+            "threshold": 0.58
+          },
+          {
+            "model": {
+              "type": "minecraft:model",
+              "model": "minecraft:item/crossbow_pulling_2"
+            },
+            "threshold": 1.0
+          }
+        ],
+        "fallback": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/crossbow_pulling_0"
+        },
+        "property": "minecraft:crossbow/pull"
+      },
+      "property": "minecraft:using_item"
+    },
+    "property": "minecraft:charge_type"
+  }
+}

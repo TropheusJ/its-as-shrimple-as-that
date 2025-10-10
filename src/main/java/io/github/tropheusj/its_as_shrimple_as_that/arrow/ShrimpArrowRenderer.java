@@ -15,13 +15,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.Mth;
 
 public class ShrimpArrowRenderer extends EntityRenderer<ShrimpArrowEntity, ShrimpRenderState> {
 	private final ShrimpModel<ShrimpRenderState> model;
 
 	public ShrimpArrowRenderer(Context context) {
 		super(context);
-		this.model = new ShrimpModel<>(context);
+		this.model = new ShrimpModel<>(context.getModelSet());
 	}
 
 	@Override
@@ -30,20 +31,25 @@ public class ShrimpArrowRenderer extends EntityRenderer<ShrimpArrowEntity, Shrim
 	}
 
 	@Override
+	public void extractRenderState(ShrimpArrowEntity entity, ShrimpRenderState state, float partialTicks) {
+		super.extractRenderState(entity, state, partialTicks);
+		state.yRot =  entity.getYRot(partialTicks);
+		state.xRot = entity.getXRot(partialTicks);
+	}
+
+	@Override
 	public void submit(ShrimpRenderState state, PoseStack matrices, SubmitNodeCollector collector, CameraRenderState camera) {
 		super.submit(state, matrices, collector, camera);
 
 		matrices.pushPose();
-		// matrices.mulPose(Axis.YP.rotationDegrees(Mth.lerp(g, shrimp.yRotO, shrimp.getYRot()) - 90.0F));
-		// matrices.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(g, shrimp.xRotO, shrimp.getXRot())));
-
-		matrices.mulPose(Axis.ZP.rotationDegrees(90));
-		matrices.mulPose(Axis.YP.rotationDegrees(90));
-		matrices.mulPose(Axis.XN.rotationDegrees(90));
+		matrices.mulPose(Axis.YP.rotationDegrees(state.yRot - 90));
+		matrices.mulPose(Axis.ZP.rotationDegrees(state.xRot));
+		matrices.mulPose(Axis.XP.rotationDegrees(180));
+		matrices.mulPose(Axis.YP.rotationDegrees(-90));
 		matrices.translate(0, -1.4, 0);
 
 		RenderType renderType = this.model.renderType(ShrimpRenderer.TEXTURE);
-		collector.submitModel(this.model, state, matrices, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF, null);
+		collector.submitModel(this.model, state, matrices, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, null);
 		matrices.popPose();
 	}
 }

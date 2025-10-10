@@ -22,6 +22,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 
 public class ItsAsShrimpleAsThat implements ModInitializer {
@@ -36,7 +37,12 @@ public class ItsAsShrimpleAsThat implements ModInitializer {
 		ItsAsShrimpleAsThatItems.init();
 		ItsAsShrimpleAsThatTriggers.init();
 
-		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(entries -> entries.accept(ItsAsShrimpleAsThatItems.SHRIMP_EGG));
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(
+				entries -> entries.addAfter(Items.RABBIT_STEW, ItsAsShrimpleAsThatItems.FRIED_RICE)
+		);
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(
+				entries -> entries.accept(ItsAsShrimpleAsThatItems.SHRIMP_EGG)
+		);
 
 		CommandRegistrationCallback.EVENT.register(
 				(dispatcher, registryAccess, environment) -> dispatcher.register(KrillCommand.build())

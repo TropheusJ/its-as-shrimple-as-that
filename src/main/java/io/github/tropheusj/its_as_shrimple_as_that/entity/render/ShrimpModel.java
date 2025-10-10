@@ -4,6 +4,7 @@ import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 
 import io.github.tropheusj.its_as_shrimple_as_that.ItsAsShrimpleAsThat;
+import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -11,7 +12,6 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
 public class ShrimpModel<T extends LivingEntityRenderState> extends EntityModel<T> {
@@ -19,8 +19,8 @@ public class ShrimpModel<T extends LivingEntityRenderState> extends EntityModel<
 
 	private final KeyframeAnimation walkAnimation;
 
-	public ShrimpModel(EntityRendererProvider.Context ctx) {
-		super(ctx.bakeLayer(LAYER_LOCATION));
+	public ShrimpModel(EntityModelSet models) {
+		super(models.bakeLayer(LAYER_LOCATION));
 		this.walkAnimation = ShrimpMoveAnimation.WALK.bake(this.root());
 	}
 

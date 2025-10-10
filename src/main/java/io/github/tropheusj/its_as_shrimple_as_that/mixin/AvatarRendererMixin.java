@@ -29,7 +29,7 @@ public abstract class AvatarRendererMixin implements AvatarRendererExtensions {
 
 	@Inject(method = "<init>", at = @At("TAIL"))
 	private void onInit(Context context, boolean bl, CallbackInfo ci) {
-		this.shrimpModel = new ShrimpModel<>(context);
+		this.shrimpModel = new ShrimpModel<>(context.getModelSet());
 	}
 
 	@Inject(
