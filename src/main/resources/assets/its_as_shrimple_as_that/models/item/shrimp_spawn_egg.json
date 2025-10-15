@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "block/stone"
+    "layer0": "its_as_shrimple_as_that:item/shrimp_spawn_egg"
   }
 }
