@@ -8,9 +8,7 @@ group = "io.github.tropheusj"
 
 val buildNum = providers.environmentVariable("GITHUB_RUN_NUMBER")
     .filter(String::isNotEmpty)
-	.map { "build.$it" }
-    .orElse("local")
-    .get()
+    .getOrElse("99999")
 
 version = "2.0.$buildNum+mc${libs.versions.minecraft.get()}"
 
