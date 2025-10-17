@@ -1,6 +1,8 @@
 {
   "item.its_as_shrimple_as_that.fried_rice": "Fried Rice",
   "item.its_as_shrimple_as_that.shrimp_spawn_egg": "Shrimp Spawn Egg",
+  "item.its_as_shrimple_as_that.raw_shrimp": "Raw Shrimp",
+  "item.its_as_shrimple_as_that.cooked_shrimp": "Cooked Shrimp",
   "item.its_as_shrimple_as_that.shrimp_arrow": "Shrimp",
 
   "entity.its_as_shrimple_as_that.shrimp": "Shrimp",
@@ -30,5 +32,6 @@
   "advancement.its_as_shrimple_as_that.unimaginable_power.description": "Not bad for a bottom-feeder.",
 
   "commands.krill.success.single": "Krilled %s",
-  "commands.krill.success.multiple": "Krilled %s entities"
+  "commands.krill.success.multiple": "Krilled %s entities",
+  "itemGroup.its_as_shrimple_as_that.shrimple_items": "Shrimple Items"
 }
